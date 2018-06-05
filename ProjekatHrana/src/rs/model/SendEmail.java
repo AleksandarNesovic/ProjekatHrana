@@ -6,8 +6,9 @@ import java.util.*;
 
 
 public class SendEmail {
-
+								//Uneti validnu email adresu
 	final String senderEmailID = "crazynorth203@gmail.com";
+								//Uneti validan password za gore navedenu adresu, ako je nalog gmail mora da se omoguci smanjena sigurnost(https://myaccount.google.com/lesssecureapps)
 	final String senderPassword = "delijesever";
 	final String emailSMTPserver = "smtp.gmail.com";
 	final String emailServerPort = "465";
