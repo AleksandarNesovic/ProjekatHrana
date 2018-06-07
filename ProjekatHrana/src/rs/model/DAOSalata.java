@@ -17,7 +17,7 @@ public class DAOSalata {
 
 	private void connect() throws ClassNotFoundException, SQLException {
 		Class.forName("com.mysql.cj.jdbc.Driver");
-		connect = DriverManager.getConnection("jdbc:mysql://localhost/Vezba2 ?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "root", "");
+		connect = DriverManager.getConnection("jdbc:mysql://localhost/Vezba3 ?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "root", "");
 	}
 
 	
@@ -83,6 +83,29 @@ public class DAOSalata {
 		preparedStatement = connect.prepareStatement("select * from Salata WHERE naziv= ?");
 
 		preparedStatement.setString(1, naziv);
+		
+		preparedStatement.execute();
+		
+		resultSet = preparedStatement.getResultSet();
+		
+		if (resultSet.next()) {
+			salata = new Salata();
+			salata.setId_sal(resultSet.getInt("id_sal"));
+			salata.setNaziv(resultSet.getString("naziv"));
+			salata.setPorcija(resultSet.getInt("porcija"));
+			salata.setCena(resultSet.getDouble("cena"));
+		}
+		
+		close();
+		return salata;
+	}
+	public Salata selectIzabranaSalata(Salata sal) throws ClassNotFoundException, SQLException {
+		Salata salata = null;
+		
+		connect();
+		preparedStatement = connect.prepareStatement("select * from Salata");
+
+		//preparedStatement.setString(1, naziv);
 		
 		preparedStatement.execute();
 		

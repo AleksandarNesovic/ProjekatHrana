@@ -41,8 +41,10 @@ public class Salata {
 	}
 	@Override
 	public String toString() {
-		return id_sal + ". " + naziv + "; " + porcija + "g, " + cena+" din\n";
+		return naziv ;
 	}
-	
+	public String ispis() {
+		return naziv+" "+porcija+"g, "+cena+"din";
+	}
 
 }

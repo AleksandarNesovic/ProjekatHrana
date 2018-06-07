@@ -41,8 +41,10 @@ public class Slatkis {
 	}
 	@Override
 	public String toString() {
-		return id_slat + ". " + naziv + "; " + kolicina + "g, " + cena+" din\n";
+		return naziv ;
 	}
-	
+	public String ispis() {
+		return naziv+" "+kolicina+"g, "+cena+"din";
+	}
 
 }
