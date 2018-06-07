@@ -17,24 +17,24 @@ public class DAOGlavnoJelo {
 
 	private void connect() throws ClassNotFoundException, SQLException {
 		Class.forName("com.mysql.cj.jdbc.Driver");
-		connect = DriverManager.getConnection("jdbc:mysql://localhost/Vezba2 ?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "root", "");
+		connect = DriverManager.getConnection("jdbc:mysql://localhost/Vezba3 ?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "root", "");
 	}
 
-	
+
 	public ArrayList<GlavnoJelo> selectGlavnoJelo() throws ClassNotFoundException, SQLException {
-		
+
 		ArrayList<GlavnoJelo> lista = new ArrayList<GlavnoJelo>();
 		GlavnoJelo pom=null;
 
 		connect();
 		preparedStatement = connect.prepareStatement("select * from Glavno_jelo");
 
-		
-		
+
+
 		preparedStatement.execute();
-		
+
 		resultSet = preparedStatement.getResultSet();
-		
+
 		while (resultSet.next()) {
 			pom=new GlavnoJelo();
 			pom.setId_glj(resultSet.getInt("id_glj"));
@@ -45,22 +45,42 @@ public class DAOGlavnoJelo {
 
 			lista.add(pom);
 		}
-		
+
 		close();
 		return lista;
 	}
+	public int countGlavnoJelo() throws ClassNotFoundException, SQLException {
+
+		//ArrayList<GlavnoJelo> lista = new ArrayList<GlavnoJelo>();
+		//GlavnoJelo pom=null;
+		int num=0;
+		connect();
+		preparedStatement = connect.prepareStatement("select * from Glavno_jelo");
+
+
+
+		preparedStatement.execute();
+
+		resultSet = preparedStatement.getResultSet();
+		for (int i = 0; i < resultSet.getRow(); i++) {
+			num++;
+		}
+
+		close();
+		return num;
+	}
 	public GlavnoJelo selectGlavnoJeloByNaziv(String naziv) throws ClassNotFoundException, SQLException {
 		GlavnoJelo glavnoJelo = null;
-		
+
 		connect();
 		preparedStatement = connect.prepareStatement("select * from Glavno_jelo WHERE naziv= ?");
 
 		preparedStatement.setString(1, naziv);
-		
+
 		preparedStatement.execute();
-		
+
 		resultSet = preparedStatement.getResultSet();
-		
+
 		if (resultSet.next()) {
 			glavnoJelo = new GlavnoJelo();
 			glavnoJelo.setId_glj(resultSet.getInt("id_glj"));
@@ -68,22 +88,22 @@ public class DAOGlavnoJelo {
 			glavnoJelo.setKolicina(resultSet.getInt("kolicina"));
 			glavnoJelo.setCena(resultSet.getDouble("cena"));
 		}
-		
+
 		close();
 		return glavnoJelo;
 	}
 	public GlavnoJelo selectGlavnoJeloById(int id_glj) throws ClassNotFoundException, SQLException {
 		GlavnoJelo glavnoJelo = null;
-		
+
 		connect();
 		preparedStatement = connect.prepareStatement("select * from Glavno_jelo WHERE id_glj= ?");
 
 		preparedStatement.setInt(1, id_glj);
-		
+
 		preparedStatement.execute();
-		
+
 		resultSet = preparedStatement.getResultSet();
-		
+
 		if (resultSet.next()) {
 			glavnoJelo = new GlavnoJelo();
 			glavnoJelo.setId_glj(resultSet.getInt("id_glj"));
@@ -91,7 +111,53 @@ public class DAOGlavnoJelo {
 			glavnoJelo.setKolicina(resultSet.getInt("kolicina"));
 			glavnoJelo.setCena(resultSet.getDouble("cena"));
 		}
-		
+
+		close();
+		return glavnoJelo;
+	}
+/*	public GlavnoJelo selectGlavnoJeloByNaziv(String naziv) throws ClassNotFoundException, SQLException {
+		GlavnoJelo glavnoJelo = null;
+
+		connect();
+		preparedStatement = connect.prepareStatement("select * from Glavno_jelo WHERE naziv= ?");
+
+		preparedStatement.setString(1, naziv);
+
+		preparedStatement.execute();
+
+		resultSet = preparedStatement.getResultSet();
+
+		if (resultSet.next()) {
+			glavnoJelo = new GlavnoJelo();
+			glavnoJelo.setId_glj(resultSet.getInt("id_glj"));
+			glavnoJelo.setNaziv(resultSet.getString("naziv"));
+			glavnoJelo.setKolicina(resultSet.getInt("kolicina"));
+			glavnoJelo.setCena(resultSet.getDouble("cena"));
+		}
+
+		close();
+		return glavnoJelo;
+	}*/
+	public GlavnoJelo selectIzabranoGlavnoJelo(GlavnoJelo glavno) throws ClassNotFoundException, SQLException {
+		GlavnoJelo glavnoJelo = null;
+
+		connect();
+		preparedStatement = connect.prepareStatement("select * from Glavno_jelo");
+
+		//preparedStatement.setInt(1, id_glj);
+
+		preparedStatement.execute();
+
+		resultSet = preparedStatement.getResultSet();
+
+		if (resultSet.next()) {
+			glavnoJelo = new GlavnoJelo();
+			glavnoJelo.setId_glj(resultSet.getInt("id_glj"));
+			glavnoJelo.setNaziv(resultSet.getString("naziv"));
+			glavnoJelo.setKolicina(resultSet.getInt("kolicina"));
+			glavnoJelo.setCena(resultSet.getDouble("cena"));
+		}
+
 		close();
 		return glavnoJelo;
 	}
@@ -104,23 +170,23 @@ public class DAOGlavnoJelo {
 		preparedStatement.setString(1, gj.getNaziv());
 		preparedStatement.setInt(2, gj.getKolicina());
 		preparedStatement.setDouble(3, gj.getCena());
-		
+
 		preparedStatement.execute();
-		
-		
+
+
 		close();
 	}
-	
+
 	public void deleteGlavnoJeloByID(int id) throws ClassNotFoundException, SQLException {
 
 		connect();
 		preparedStatement = connect.prepareStatement("delete from Glavno_jelo where id_glj = ?");
 
 		preparedStatement.setInt(1, id);
-		
+
 		preparedStatement.execute();
-		
-		
+
+
 		close();
 	}
 
