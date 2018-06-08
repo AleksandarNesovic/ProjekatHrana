@@ -1,7 +1,5 @@
 package Test;
 
-import java.awt.BorderLayout;
-
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -9,32 +7,34 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import rs.model.DAOGlavnoJelo;
+import rs.model.DAONarudzbina;
 import rs.model.DAOSalata;
 import rs.model.DAOSlatkis;
 import rs.model.GlavnoJelo;
+import rs.model.Narudzbina;
 import rs.model.Salata;
 import rs.model.SendEmail;
 import rs.model.Slatkis;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JRadioButton;
-import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.DefaultComboBoxModel;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class GUINarudzbina extends JFrame {
+	DAONarudzbina daoNarudzbina=new DAONarudzbina();
+	Narudzbina narudzbina=new Narudzbina();
 	DAOGlavnoJelo daoglavno=new DAOGlavnoJelo();
-
 	JComboBox<GlavnoJelo> comboBoxGlavno;
 	JComboBox<Salata> comboBoxSalata;
 	JComboBox<Slatkis> comboBoxSlatkis;
@@ -43,13 +43,13 @@ public class GUINarudzbina extends JFrame {
 	Slatkis pomSlatkis=null;
 	double sum;
 	SendEmail mail;
-
-
-
 	DAOSalata dsalata=new DAOSalata();
 	DAOSlatkis dslatkis=new DAOSlatkis();
+	private JTextField textFieldMail;
 
 	private JPanel contentPane;
+	private JTextField textFieldKolicinaGklavnog;
+	private JTextField textFieldKolicinaSalate;
 
 	/**
 	 * Launch the application.
@@ -66,14 +66,6 @@ public class GUINarudzbina extends JFrame {
 			}
 		});
 	}
-	private Connection connect = null;
-	private JTextField textFieldMail;
-	private void connect() throws ClassNotFoundException, SQLException {
-		Class.forName("com.mysql.cj.jdbc.Driver");
-		connect = DriverManager.getConnection("jdbc:mysql://localhost/Vezba3 ?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "root", "");
-	}
-
-
 	/**
 	 * Create the frame.
 	 */
@@ -111,6 +103,37 @@ public class GUINarudzbina extends JFrame {
 		comboBoxSlatkis.setBounds(366, 110, 117, 25);
 		contentPane.add(comboBoxSlatkis);
 		popunicomboBoxSlatkis();
+		
+		textFieldKolicinaGklavnog = new JTextField();
+		textFieldKolicinaGklavnog.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c=e.getKeyChar();
+				if(!(Character.isDigit(c) || (c==KeyEvent.VK_BACK_SPACE) || c==KeyEvent.VK_DELETE)) {
+					getToolkit().beep();
+					e.consume();
+				}
+			}
+		});
+		textFieldKolicinaGklavnog.setBounds(30, 211, 114, 19);
+		contentPane.add(textFieldKolicinaGklavnog);
+		textFieldKolicinaGklavnog.setColumns(10);
+		
+		textFieldKolicinaSalate = new JTextField();
+		textFieldKolicinaSalate.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c=e.getKeyChar();
+				if(!(Character.isDigit(c) || (c==KeyEvent.VK_BACK_SPACE) || c==KeyEvent.VK_DELETE)) {
+					getToolkit().beep();
+					e.consume();
+				}
+			}
+		});
+		textFieldKolicinaSalate.setBounds(195, 211, 114, 19);
+		contentPane.add(textFieldKolicinaSalate);
+		textFieldKolicinaSalate.setColumns(10);
+
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(66, 338, 445, 129);
@@ -129,24 +152,34 @@ public class GUINarudzbina extends JFrame {
 		contentPane.add(lblNewLabel);
 
 		JButton btnNaruci = new JButton("Naruci");
-		btnNaruci.setBounds(66, 223, 117, 25);
+		btnNaruci.setBounds(66, 258, 117, 25);
 		btnNaruci.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				pomGlavnoJelo=(GlavnoJelo) comboBoxGlavno.getSelectedItem();
 				pomSalata=(Salata) comboBoxSalata.getSelectedItem();
 				pomSlatkis=(Slatkis) comboBoxSlatkis.getSelectedItem();
-				sum=pomGlavnoJelo.getCena()+pomSalata.getCena()+pomSlatkis.getCena();
+				narudzbina=new Narudzbina(pomGlavnoJelo, pomSalata, pomSlatkis, Integer.parseInt(textFieldKolicinaGklavnog.getText()),Integer.parseInt(textFieldKolicinaSalate.getText()), textFieldMail.getText());
+				try {
+					daoNarudzbina.insertNarudzbina(narudzbina);
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				sum=((pomGlavnoJelo.getCena()/1000)*Integer.parseInt(textFieldKolicinaGklavnog.getText()))+((pomSalata.getCena()/1000)*Integer.parseInt(textFieldKolicinaSalate.getText()))+pomSlatkis.getCena();
 				JOptionPane.showMessageDialog(null, "Uspesno ste porucili");
 			}
 		});
 		contentPane.add(btnNaruci);
 
 		JButton btnPrikazinarudzbinu = new JButton("PrikaziNarudzbinu");
-		btnPrikazinarudzbinu.setBounds(303, 223, 164, 25);
+		btnPrikazinarudzbinu.setBounds(293, 258, 164, 25);
 		btnPrikazinarudzbinu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				textAreaNarudzbina.setText("Vasa narudzbina je: "+pomGlavnoJelo.ispis()+"\n"+pomSalata.ispis()+"\n"+pomSlatkis.ispis()+"\n\n Ukupna cena vase narudzbine je: "+sum);
+				textAreaNarudzbina.setText("Vasa narudzbina je: "+narudzbina.toString()+"\n\n Ukupna cena vase narudzbine je: "+sum);
 			}
 		});
 		contentPane.add(btnPrikazinarudzbinu);
@@ -156,20 +189,24 @@ public class GUINarudzbina extends JFrame {
 		btnPosaljiPorudzbinu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String textmail=textFieldMail.getText();
+				
 				if(textmail.contains("@") && textmail.contains(".")) {
-					mail=new SendEmail(textmail, "Narudzbina", pomGlavnoJelo.ispis()+"\n"+pomSalata.ispis()+"\n"+pomSlatkis.ispis());
+					mail=new SendEmail(textmail, "Narudzbina", narudzbina.toString());
 					JOptionPane.showMessageDialog(null, "Narudzbina poslata na mail");
-					
-
 				}else
 					JOptionPane.showMessageDialog(null, "Unesite ispravnu email adresu");
 			}
 		});
 		contentPane.add(btnPosaljiPorudzbinu);
-
+		
+		
+		
+		JLabel lblKolicina = new JLabel("Kolicina(g):");
+		lblKolicina.setBounds(205, 147, 170, 25);
+		contentPane.add(lblKolicina);
+		
+		
 	}
-
-
 	private void popunicomboBoxSlatkis(){
 		ArrayList<Slatkis> listaSlatkisa=new ArrayList<Slatkis>();
 		DAOSlatkis daoSlatkis=new DAOSlatkis();

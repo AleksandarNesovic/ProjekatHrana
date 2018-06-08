@@ -39,7 +39,7 @@ public class DAOSlatkis {
 			pom=new Slatkis();
 			pom.setId_slat(resultSet.getInt("id_slat"));
 			pom.setNaziv(resultSet.getString("naziv"));
-			pom.setKolicina(resultSet.getInt("kolicina"));
+			pom.setKolicina(resultSet.getInt("Kolicina"));
 			pom.setCena(resultSet.getDouble("cena"));
 
 
@@ -93,7 +93,7 @@ public class DAOSlatkis {
 			slatkis = new Slatkis();
 			slatkis.setId_slat(resultSet.getInt("id_slat"));
 			slatkis.setNaziv(resultSet.getString("naziv"));
-			slatkis.setKolicina(resultSet.getInt("kolicina"));
+			slatkis.setKolicina(resultSet.getInt("Kolicina"));
 			slatkis.setCena(resultSet.getDouble("cena"));
 		}
 		
@@ -116,7 +116,7 @@ public class DAOSlatkis {
 			slatkis = new Slatkis();
 			slatkis.setId_slat(resultSet.getInt("id_slat"));
 			slatkis.setNaziv(resultSet.getString("naziv"));
-			slatkis.setKolicina(resultSet.getInt("kolicina"));
+			slatkis.setKolicina(resultSet.getInt("Kolicina"));
 			slatkis.setCena(resultSet.getDouble("cena"));
 		}
 		
