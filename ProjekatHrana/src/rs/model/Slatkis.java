@@ -12,8 +12,14 @@ public class Slatkis {
 	public Slatkis(String naziv, int kolicina, double cena) {
 		super();
 		this.naziv = naziv;
-		this.kolicina = kolicina;
+		this.kolicina=kolicina;
 		this.cena = cena;
+	}
+	public int getKolicina() {
+		return kolicina;
+	}
+	public void setKolicina(int kolicina) {
+		this.kolicina = kolicina;
 	}
 	public int getId_slat() {
 		return id_slat;
@@ -27,12 +33,6 @@ public class Slatkis {
 	public void setNaziv(String naziv) {
 		this.naziv = naziv;
 	}
-	public int getKolicina() {
-		return kolicina;
-	}
-	public void setKolicina(int kolicina) {
-		this.kolicina = kolicina;
-	}
 	public double getCena() {
 		return cena;
 	}
@@ -44,7 +44,7 @@ public class Slatkis {
 		return naziv ;
 	}
 	public String ispis() {
-		return naziv+" "+kolicina+"g, "+cena+"din";
+		return naziv+" "+kolicina+"g "+cena+"din";
 	}
 
 }

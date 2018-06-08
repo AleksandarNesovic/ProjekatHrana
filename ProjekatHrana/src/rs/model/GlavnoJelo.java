@@ -3,7 +3,6 @@ package rs.model;
 public class GlavnoJelo {
 	private int id_glj;
 	private String naziv;
-	private int kolicina;
 	private double cena;
 	public GlavnoJelo() {
 		super();
@@ -12,7 +11,6 @@ public class GlavnoJelo {
 	public GlavnoJelo(String naziv, int kolicina, double cena) {
 		super();
 		this.naziv = naziv;
-		this.kolicina = kolicina;
 		this.cena = cena;
 	}
 	public int getId_glj() {
@@ -27,12 +25,7 @@ public class GlavnoJelo {
 	public void setNaziv(String naziv) {
 		this.naziv = naziv;
 	}
-	public int getKolicina() {
-		return kolicina;
-	}
-	public void setKolicina(int kolicina) {
-		this.kolicina = kolicina;
-	}
+	
 	public double getCena() {
 		return cena;
 	}
@@ -44,7 +37,7 @@ public class GlavnoJelo {
 		return naziv ;
 	}
 	public String ispis() {
-		return naziv+" "+kolicina+"g, "+cena+"din";
+		return naziv+" "+cena+"din";
 	}
 
 }

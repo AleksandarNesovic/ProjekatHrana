@@ -39,7 +39,6 @@ public class DAOSalata {
 			pom=new Salata();
 			pom.setId_sal(resultSet.getInt("id_sal"));
 			pom.setNaziv(resultSet.getString("naziv"));
-			pom.setPorcija(resultSet.getInt("porcija"));
 			pom.setCena(resultSet.getDouble("cena"));
 
 			lista.add(pom);
@@ -55,7 +54,6 @@ public class DAOSalata {
 		preparedStatement = connect.prepareStatement("INSERT INTO Salata(naziv, porcija, cena) VALUES (?,?,?)");
 
 		preparedStatement.setString(1, salata.getNaziv());
-		preparedStatement.setInt(2, salata.getPorcija());
 		preparedStatement.setDouble(3, salata.getCena());
 		
 		preparedStatement.execute();
@@ -92,7 +90,6 @@ public class DAOSalata {
 			salata = new Salata();
 			salata.setId_sal(resultSet.getInt("id_sal"));
 			salata.setNaziv(resultSet.getString("naziv"));
-			salata.setPorcija(resultSet.getInt("porcija"));
 			salata.setCena(resultSet.getDouble("cena"));
 		}
 		
@@ -115,7 +112,6 @@ public class DAOSalata {
 			salata = new Salata();
 			salata.setId_sal(resultSet.getInt("id_sal"));
 			salata.setNaziv(resultSet.getString("naziv"));
-			salata.setPorcija(resultSet.getInt("porcija"));
 			salata.setCena(resultSet.getDouble("cena"));
 		}
 		
@@ -138,7 +134,6 @@ public class DAOSalata {
 			salata = new Salata();
 			salata.setId_sal(resultSet.getInt("id_sal"));
 			salata.setNaziv(resultSet.getString("naziv"));
-			salata.setPorcija(resultSet.getInt("porcija"));
 			salata.setCena(resultSet.getDouble("cena"));
 		}
 		

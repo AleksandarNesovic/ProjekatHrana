@@ -39,7 +39,6 @@ public class DAOGlavnoJelo {
 			pom=new GlavnoJelo();
 			pom.setId_glj(resultSet.getInt("id_glj"));
 			pom.setNaziv(resultSet.getString("naziv"));
-			pom.setKolicina(resultSet.getInt("kolicina"));
 			pom.setCena(resultSet.getDouble("cena"));
 
 
@@ -85,7 +84,6 @@ public class DAOGlavnoJelo {
 			glavnoJelo = new GlavnoJelo();
 			glavnoJelo.setId_glj(resultSet.getInt("id_glj"));
 			glavnoJelo.setNaziv(resultSet.getString("naziv"));
-			glavnoJelo.setKolicina(resultSet.getInt("kolicina"));
 			glavnoJelo.setCena(resultSet.getDouble("cena"));
 		}
 
@@ -108,7 +106,6 @@ public class DAOGlavnoJelo {
 			glavnoJelo = new GlavnoJelo();
 			glavnoJelo.setId_glj(resultSet.getInt("id_glj"));
 			glavnoJelo.setNaziv(resultSet.getString("naziv"));
-			glavnoJelo.setKolicina(resultSet.getInt("kolicina"));
 			glavnoJelo.setCena(resultSet.getDouble("cena"));
 		}
 
@@ -154,7 +151,6 @@ public class DAOGlavnoJelo {
 			glavnoJelo = new GlavnoJelo();
 			glavnoJelo.setId_glj(resultSet.getInt("id_glj"));
 			glavnoJelo.setNaziv(resultSet.getString("naziv"));
-			glavnoJelo.setKolicina(resultSet.getInt("kolicina"));
 			glavnoJelo.setCena(resultSet.getDouble("cena"));
 		}
 
@@ -168,7 +164,6 @@ public class DAOGlavnoJelo {
 		preparedStatement = connect.prepareStatement("INSERT INTO Glavno_jelo(naziv, kolicina, cena) VALUES (?,?,?)");
 
 		preparedStatement.setString(1, gj.getNaziv());
-		preparedStatement.setInt(2, gj.getKolicina());
 		preparedStatement.setDouble(3, gj.getCena());
 
 		preparedStatement.execute();
