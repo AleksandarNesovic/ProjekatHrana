@@ -1,28 +1,61 @@
 package rs.model;
 
+import java.sql.Date;
+
 public class Narudzbina {
+	private Klijent klijent;
 	private GlavnoJelo glavnoJelo;
 	private Salata salata;
 	private Slatkis slatkis;
 	private int kolicinaGlavnogJele;
 	private int kolicinaSalate;
 	private String email;
+	private java.sql.Date datumPorudzbine;
 	
 	public Narudzbina() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Narudzbina(GlavnoJelo glavnoJelo, Salata salata, Slatkis slatkis, int kolicinaGlavnogJele,
-			int kolicinaSalate, String email) {
+
+
+	public Date getDatumPorudzbine() {
+		return datumPorudzbine;
+	}
+
+
+
+	public void setDatumPorudzbine(Date datumPorudzbine) {
+		this.datumPorudzbine = datumPorudzbine;
+	}
+	
+
+	public Klijent getKlijent() {
+		return klijent;
+	}
+
+
+
+	public void setKlijent(Klijent klijent) {
+		this.klijent = klijent;
+	}
+
+
+
+	public Narudzbina(Klijent klijent, GlavnoJelo glavnoJelo, Salata salata, Slatkis slatkis, int kolicinaGlavnogJele,
+			int kolicinaSalate, String email, Date datumPorudzbine) {
 		super();
+		this.klijent = klijent;
 		this.glavnoJelo = glavnoJelo;
 		this.salata = salata;
 		this.slatkis = slatkis;
 		this.kolicinaGlavnogJele = kolicinaGlavnogJele;
 		this.kolicinaSalate = kolicinaSalate;
 		this.email = email;
+		this.datumPorudzbine = datumPorudzbine;
 	}
+
+
 
 	public GlavnoJelo getGlavnoJelo() {
 		return glavnoJelo;
@@ -76,7 +109,7 @@ public class Narudzbina {
 	@Override
 	public String toString() {
 		return glavnoJelo + " " + kolicinaGlavnogJele +"g\n"+ salata + " "+ kolicinaSalate+"g\n" + slatkis+" "+slatkis.getKolicina()
-				  + "g\nSlanje na mail adresu: " + email;
+				  + "g\nSlanje na mail adresu: " + email+"\n Datum porudzbine: "+datumPorudzbine;
 	}
 	
 	
