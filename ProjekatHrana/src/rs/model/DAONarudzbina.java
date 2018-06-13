@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 public class DAONarudzbina {
@@ -127,6 +128,24 @@ public class DAONarudzbina {
 		return lista;
 			
 		}
+	public boolean proveraNarudzbina(int id,Date datum) throws ClassNotFoundException, SQLException {
+		connect();
+		preparedStatement = connect.prepareStatement("select * from Narudzbina where id_klijenta=? AND datumPorudzbine=?");
+		preparedStatement.setInt(1, id);
+		preparedStatement.setDate(2, datum);
+
+		preparedStatement.execute();
+
+		resultSet = preparedStatement.getResultSet();
+
+		if(resultSet.next()) {
+			return true;
+		}
+
+		close();
+		return false;
+	}
+	
 	private void close() {
 		try {
 			if (resultSet != null) {

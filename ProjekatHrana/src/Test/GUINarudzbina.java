@@ -1,7 +1,7 @@
 package Test;
 
 import java.awt.EventQueue;
-
+import java.awt.HeadlessException;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -41,6 +41,7 @@ import javax.swing.JTable;
 
 public class GUINarudzbina extends JFrame {
 	DAONarudzbina daoNarudzbina=new DAONarudzbina();
+	Narudzbina narudzbinaPom=new Narudzbina();
 	Narudzbina narudzbina=new Narudzbina();
 	DAOKlijent daoKlijent=new DAOKlijent();
 	Klijent klijent=null;
@@ -52,10 +53,12 @@ public class GUINarudzbina extends JFrame {
 	DAOSalata dsalata=new DAOSalata();
 	DAOSlatkis dslatkis=new DAOSlatkis();
 	private JTextField textFieldMail;
-	
+
 	private JPanel contentPane;
 	private JTextField textFieldKolicinaGklavnog;
 	private JTextField textFieldKolicinaSalate;
+	JDateChooser datePorudzbine;
+	java.util.Date datum=new java.util.Date(System.currentTimeMillis());
 	private JTable tableNarudzbina;
 	private JTextField textFieldIdKlijenta;
 
@@ -111,12 +114,13 @@ public class GUINarudzbina extends JFrame {
 		comboBoxSlatkis.setBounds(366, 110, 117, 25);
 		contentPane.add(comboBoxSlatkis);
 		popunicomboBoxSlatkis();
-		
-		JDateChooser datePorudzbine = new JDateChooser();
+
+		datePorudzbine = new JDateChooser();
 		datePorudzbine.setDateFormatString("yyyy-MM-dd");
 		datePorudzbine.setBounds(391, 284, 151, 19);
+		datePorudzbine.setDate(datum);
 		contentPane.add(datePorudzbine);
-		
+
 		textFieldKolicinaGklavnog = new JTextField();
 		textFieldKolicinaGklavnog.addKeyListener(new KeyAdapter() {
 			@Override
@@ -131,7 +135,7 @@ public class GUINarudzbina extends JFrame {
 		textFieldKolicinaGklavnog.setBounds(30, 211, 114, 19);
 		contentPane.add(textFieldKolicinaGklavnog);
 		textFieldKolicinaGklavnog.setColumns(10);
-		
+
 		textFieldKolicinaSalate = new JTextField();
 		textFieldKolicinaSalate.addKeyListener(new KeyAdapter() {
 			@Override
@@ -151,7 +155,7 @@ public class GUINarudzbina extends JFrame {
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(66, 338, 445, 129);
 		contentPane.add(scrollPane);
-		
+
 		tableNarudzbina = new JTable();
 		scrollPane.setViewportView(tableNarudzbina);
 
@@ -159,7 +163,7 @@ public class GUINarudzbina extends JFrame {
 		textFieldMail.setBounds(163, 494, 324, 25);
 		contentPane.add(textFieldMail);
 		textFieldMail.setColumns(10);
-		
+
 		textFieldIdKlijenta = new JTextField();
 		textFieldIdKlijenta.addKeyListener(new KeyAdapter() {
 			@Override
@@ -174,7 +178,7 @@ public class GUINarudzbina extends JFrame {
 		textFieldIdKlijenta.setBounds(397, 211, 114, 19);
 		contentPane.add(textFieldIdKlijenta);
 		textFieldIdKlijenta.setColumns(10);
-		
+
 		JLabel lblNewLabel = new JLabel("Unesite mail:");
 		lblNewLabel.setBounds(27, 494, 142, 25);
 		contentPane.add(lblNewLabel);
@@ -203,24 +207,32 @@ public class GUINarudzbina extends JFrame {
 					// TODO Auto-generated catch block
 					e2.printStackTrace();
 				}
-				if(validacija()==true && validacijaIdKlijenta()==true) {
+				try {
+					if(validacija()==true && validacijaIdKlijenta()==true) {
+						if(daoNarudzbina.proveraNarudzbina(klijent.getId_klijenta(), sqldate)==true) {
+							JOptionPane.showMessageDialog(null, "Klijent je vec porucio za navedeni datum");
+						}else {
+							narudzbinaPom=new Narudzbina(klijent,pomGlavnoJelo, pomSalata, pomSlatkis, Integer.parseInt(textFieldKolicinaGklavnog.getText()),Integer.parseInt(textFieldKolicinaSalate.getText()), textFieldMail.getText(),sqldate);
+							try {
+								daoNarudzbina.insertNarudzbina(narudzbinaPom);
+							} catch (ClassNotFoundException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							} catch (SQLException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+							JOptionPane.showMessageDialog(null, "Uspesno ste porucili");
+							}
+						//sum=((pomGlavnoJelo.getCena()/1000)*Integer.parseInt(textFieldKolicinaGklavnog.getText()))+((pomSalata.getCena()/1000)*Integer.parseInt(textFieldKolicinaSalate.getText()))+pomSlatkis.getCena();
 					
-					narudzbina=new Narudzbina(klijent,pomGlavnoJelo, pomSalata, pomSlatkis, Integer.parseInt(textFieldKolicinaGklavnog.getText()),Integer.parseInt(textFieldKolicinaSalate.getText()), textFieldMail.getText(),sqldate);
-					
-					try {
-						daoNarudzbina.insertNarudzbina(narudzbina);
-					} catch (ClassNotFoundException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+					}else {
+						JOptionPane.showMessageDialog(null, "Popunite sva polja.Unesite ispravan ID klijenta ili email adresu");
 					}
-				sum=((pomGlavnoJelo.getCena()/1000)*Integer.parseInt(textFieldKolicinaGklavnog.getText()))+((pomSalata.getCena()/1000)*Integer.parseInt(textFieldKolicinaSalate.getText()))+pomSlatkis.getCena();
-				JOptionPane.showMessageDialog(null, "Uspesno ste porucili");
-			}else {
-					JOptionPane.showMessageDialog(null, "Popunite sva polja ili unesite ispravan ID klijenta");
-		}}
+				} catch (NumberFormatException | HeadlessException | ClassNotFoundException | SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}}
 		});
 		contentPane.add(btnNaruci);
 
@@ -241,7 +253,7 @@ public class GUINarudzbina extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
+
 			}
 		});
 		contentPane.add(btnPrikazinarudzbinu);
@@ -259,18 +271,18 @@ public class GUINarudzbina extends JFrame {
 			}
 		});
 		contentPane.add(btnPosaljiPorudzbinu);
-		
+
 		JLabel lblKolicina = new JLabel("Kolicina(g):");
 		lblKolicina.setBounds(110, 160, 170, 25);
 		contentPane.add(lblKolicina);
-		
-		
-		
+
+
+
 		JLabel lblIdKlijenta = new JLabel("ID klijenta:");
 		lblIdKlijenta.setBounds(412, 165, 99, 15);
 		contentPane.add(lblIdKlijenta);
-		
-		
+
+
 	}
 	private void popunicomboBoxSlatkis(){
 		ArrayList<Slatkis> listaSlatkisa=new ArrayList<Slatkis>();
@@ -323,8 +335,9 @@ public class GUINarudzbina extends JFrame {
 
 	}
 	private boolean validacija() {
-		if(textFieldKolicinaGklavnog.getText().isEmpty() || textFieldKolicinaSalate.getText().isEmpty() || textFieldMail.getText().isEmpty() || textFieldIdKlijenta.getText().isEmpty())
+		if(textFieldKolicinaGklavnog.getText().isEmpty() || textFieldKolicinaSalate.getText().isEmpty() || textFieldMail.getText().isEmpty() || textFieldIdKlijenta.getText().isEmpty() || !(textFieldMail.getText().contains("@") && textFieldMail.getText().contains("."))) {
 			return false;
+		}
 		return true;
 	}
 	private boolean validacijaIdKlijenta() {
@@ -343,7 +356,7 @@ public class GUINarudzbina extends JFrame {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return false;
 	}
 }
