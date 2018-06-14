@@ -29,8 +29,6 @@ public class DAOGlavnoJelo {
 		connect();
 		preparedStatement = connect.prepareStatement("select * from Glavno_jelo");
 
-
-
 		preparedStatement.execute();
 
 		resultSet = preparedStatement.getResultSet();
@@ -50,13 +48,9 @@ public class DAOGlavnoJelo {
 	}
 	public int countGlavnoJelo() throws ClassNotFoundException, SQLException {
 
-		//ArrayList<GlavnoJelo> lista = new ArrayList<GlavnoJelo>();
-		//GlavnoJelo pom=null;
 		int num=0;
 		connect();
 		preparedStatement = connect.prepareStatement("select * from Glavno_jelo");
-
-
 
 		preparedStatement.execute();
 
@@ -134,7 +128,7 @@ public class DAOGlavnoJelo {
 
 		close();
 		return glavnoJelo;
-	}*/
+	}
 	public GlavnoJelo selectIzabranoGlavnoJelo(GlavnoJelo glavno) throws ClassNotFoundException, SQLException {
 		GlavnoJelo glavnoJelo = null;
 
@@ -156,7 +150,7 @@ public class DAOGlavnoJelo {
 
 		close();
 		return glavnoJelo;
-	}
+	}*/
 
 	public void insertGlavnoJelo(GlavnoJelo gj) throws ClassNotFoundException, SQLException {
 

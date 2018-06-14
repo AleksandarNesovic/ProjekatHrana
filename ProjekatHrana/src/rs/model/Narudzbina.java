@@ -3,6 +3,7 @@ package rs.model;
 import java.sql.Date;
 
 public class Narudzbina {
+	private int id_narudzbine;
 	private Klijent klijent;
 	private GlavnoJelo glavnoJelo;
 	private Salata salata;
@@ -17,7 +18,15 @@ public class Narudzbina {
 		// TODO Auto-generated constructor stub
 	}
 
+	public int getId_narudzbine() {
+		return id_narudzbine;
+	}
 
+
+
+	public void setId_narudzbine(int id_narudzbine) {
+		this.id_narudzbine = id_narudzbine;
+	}
 
 	public Date getDatumPorudzbine() {
 		return datumPorudzbine;
@@ -108,9 +117,12 @@ public class Narudzbina {
 
 	@Override
 	public String toString() {
-		return glavnoJelo + " " + kolicinaGlavnogJele +"g\n"+ salata + " "+ kolicinaSalate+"g\n" + slatkis+" "+slatkis.getKolicina()
-				  + "g\nSlanje na mail adresu: " + email+"\n Datum porudzbine: "+datumPorudzbine;
+		return "id_narudzbine:  " + id_narudzbine + "\nKlijent: " + klijent.getIme() + " "+klijent.getPrezime()+"\n" + glavnoJelo
+				+ " "+ kolicinaGlavnogJele+"g\n" + salata + " " + kolicinaSalate+"g\n"+ slatkis + "\nEmail: " + email + "\nDatum porudzbine: " + datumPorudzbine+"\nUkupna cena narudzbine je: ";
 	}
+	
+
+	
 	
 	
 	
