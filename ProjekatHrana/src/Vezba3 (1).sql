@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 12, 2018 at 04:11 PM
+-- Generation Time: Jun 14, 2018 at 02:25 PM
 -- Server version: 10.1.32-MariaDB
 -- PHP Version: 7.2.5
 
@@ -77,6 +77,7 @@ INSERT INTO `Klijenti` (`id_klijenta`, `Ime`, `Prezime`, `BrojTelefona`, `Email`
 --
 
 CREATE TABLE `Narudzbina` (
+  `id_narudzbine` int(11) NOT NULL,
   `id_klijenta` int(11) NOT NULL,
   `id_glj` int(11) NOT NULL,
   `id_sal` int(11) NOT NULL,
@@ -91,18 +92,51 @@ CREATE TABLE `Narudzbina` (
 -- Dumping data for table `Narudzbina`
 --
 
-INSERT INTO `Narudzbina` (`id_klijenta`, `id_glj`, `id_sal`, `id_slat`, `KolicinaGlavnogJela`, `KolicinaSalate`, `Email`, `datumPorudzbine`) VALUES
-(1, 1, 1, 1, 321, 265, 'aaohfdhasl', '2018-06-13'),
-(2, 1, 1, 1, 222, 333, 'qwesafs', '2018-06-13'),
-(2, 1, 1, 1, 145, 100, 'sdfweewr', '2018-06-13'),
-(2, 1, 1, 1, 121, 123, 'dadwaq', '2018-06-13'),
-(4, 4, 3, 3, 143, 50, 'fdsfdfs', '2018-06-13'),
-(4, 1, 1, 1, 131, 123, 'wqwe', '2018-06-14'),
-(2, 2, 2, 2, 112, 100, 'dfhgegd', '2018-06-14'),
-(1, 1, 2, 2, 150, 120, 'dfhgegd', '2018-06-14'),
-(4, 5, 4, 3, 230, 100, 'ksbvhbsdh', '2018-06-15'),
-(1, 1, 4, 3, 250, 100, 'ksbvhbsdh', '2018-06-15'),
-(3, 1, 4, 3, 230, 145, 'crazynorth203@gmail.com', '2018-06-15');
+INSERT INTO `Narudzbina` (`id_narudzbine`, `id_klijenta`, `id_glj`, `id_sal`, `id_slat`, `KolicinaGlavnogJela`, `KolicinaSalate`, `Email`, `datumPorudzbine`) VALUES
+(1, 1, 1, 1, 1, 321, 265, 'aaohfdhasl', '2018-06-13'),
+(2, 2, 1, 1, 1, 222, 333, 'qwesafs', '2018-06-13'),
+(3, 2, 1, 1, 1, 145, 100, 'sdfweewr', '2018-06-13'),
+(4, 2, 1, 1, 1, 121, 123, 'dadwaq', '2018-06-13'),
+(5, 4, 4, 3, 3, 143, 50, 'fdsfdfs', '2018-06-13'),
+(6, 4, 1, 1, 1, 131, 123, 'wqwe', '2018-06-14'),
+(7, 2, 2, 2, 2, 112, 100, 'dfhgegd', '2018-06-14'),
+(8, 1, 1, 2, 2, 150, 120, 'dfhgegd', '2018-06-14'),
+(9, 4, 5, 4, 3, 230, 100, 'ksbvhbsdh', '2018-06-15'),
+(10, 1, 1, 4, 3, 250, 100, 'ksbvhbsdh', '2018-06-15'),
+(11, 3, 1, 4, 3, 230, 145, 'crazynorth203@gmail.com', '2018-06-15'),
+(12, 3, 4, 2, 5, 250, 100, 'crazynorth203@gmail.com', '2018-06-14'),
+(13, 2, 4, 2, 5, 22, 22, 'vxzfeww', '2018-06-14'),
+(14, 1, 1, 1, 1, 123, 80, 'fsfsf', '2018-06-15'),
+(15, 2, 1, 1, 1, 123, 231, 'sadda', '2018-06-13'),
+(16, 3, 1, 1, 1, 112, 211, 'asdadad@da.ada', '2018-06-13'),
+(17, 2, 1, 1, 1, 131, 213, 'crazynorth@gmail.com', '2018-06-20'),
+(18, 2, 1, 1, 1, 131, 213, 'crazynorth@gmail.com', '2018-06-20'),
+(19, 2, 1, 1, 1, 213, 3131, 'crazynorth@gmail.com', '2018-06-20'),
+(20, 2, 1, 1, 1, 12, 23, 'fbfb@akaj.fh', '2018-06-20'),
+(21, 2, 1, 1, 1, 21, 21, 'asdad@saa.', '2018-06-20'),
+(22, 2, 1, 1, 1, 12, 213, 'isfgsklg@pasj.', '2018-06-20'),
+(23, 2, 1, 1, 1, 121, 121, 'adsa@.', '2018-06-20'),
+(24, 2, 1, 1, 1, 211, 211, 'adaabdb@.', '2018-06-13'),
+(25, 2, 1, 1, 1, 211, 211, 'adas@.', '2018-06-13'),
+(26, 2, 1, 1, 1, 211, 211, 'adnnnnns@.', '2018-06-13'),
+(27, 1, 1, 1, 1, 213, 311, 'd@.', '2018-06-18'),
+(28, 1, 1, 1, 1, 213, 311, 'd@.', '2018-06-18'),
+(29, 1, 1, 1, 1, 212, 213, 'dddd@.', '2018-06-19'),
+(30, 1, 1, 1, 1, 212, 213, 'dddd@.', '2018-06-19'),
+(31, 2, 1, 1, 1, 123, 211, 'agdaru@/.', '2018-06-13'),
+(32, 2, 1, 1, 1, 213, 21, 'admmmm@.', '2018-06-13'),
+(33, 2, 1, 1, 1, 12, 311, 'dad@.', '2018-06-13'),
+(34, 2, 1, 1, 1, 122, 213, 'ff@.', '2018-06-13'),
+(35, 2, 1, 1, 1, 113, 2321, 'aa@.a', '2018-06-13'),
+(36, 2, 1, 1, 1, 123, 12, 'w@.', '2018-06-13'),
+(37, 2, 1, 1, 1, 232, 2123, 'da@.', '2018-06-13'),
+(38, 2, 1, 1, 1, 123, 321, 'eqeeq@.', '2018-06-19'),
+(39, 4, 5, 4, 4, 123, 321, 'ragnarlotbruk203@gmail.com', '2018-06-16'),
+(40, 4, 1, 1, 1, 123, 121, 'ragnarlotbruk203@gmail.com', '2018-06-22'),
+(41, 3, 4, 3, 2, 145, 122, 'ragnarlotbruk203@gmail.com', '2018-06-16'),
+(42, 3, 3, 3, 3, 321, 243, 'acaaca@.', '2018-06-11'),
+(43, 3, 1, 1, 1, 135, 345, 'malo@.', '2018-06-10'),
+(44, 4, 1, 1, 1, 135, 345, 'malo@.', '2018-06-10');
 
 -- --------------------------------------------------------
 
@@ -170,6 +204,7 @@ ALTER TABLE `Klijenti`
 -- Indexes for table `Narudzbina`
 --
 ALTER TABLE `Narudzbina`
+  ADD PRIMARY KEY (`id_narudzbine`),
   ADD KEY `id_klijenta` (`id_klijenta`),
   ADD KEY `id_glj` (`id_glj`),
   ADD KEY `id_sal` (`id_sal`),
@@ -202,6 +237,12 @@ ALTER TABLE `Glavno_jelo`
 --
 ALTER TABLE `Klijenti`
   MODIFY `id_klijenta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `Narudzbina`
+--
+ALTER TABLE `Narudzbina`
+  MODIFY `id_narudzbine` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT for table `Salata`

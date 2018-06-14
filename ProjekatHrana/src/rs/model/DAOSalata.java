@@ -102,8 +102,6 @@ public class DAOSalata {
 		connect();
 		preparedStatement = connect.prepareStatement("select * from Salata");
 
-		//preparedStatement.setString(1, naziv);
-		
 		preparedStatement.execute();
 		
 		resultSet = preparedStatement.getResultSet();
