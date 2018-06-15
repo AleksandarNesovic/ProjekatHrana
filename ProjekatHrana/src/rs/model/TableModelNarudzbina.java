@@ -22,7 +22,7 @@ public class TableModelNarudzbina extends AbstractTableModel{
 	@Override
 	public int getColumnCount() {
 		// TODO Auto-generated method stub
-		return 9;
+		return 10;
 	}
 
 	@Override
@@ -30,14 +30,15 @@ public class TableModelNarudzbina extends AbstractTableModel{
 		Narudzbina n=lista.get(r);
 		switch(c) {
 		case 0: return n.getId_narudzbine();
-		case 1: return n.getKlijent().getId_klijenta();
-		case 2: return n.getGlavnoJelo().getId_glj();
-		case 3: return n.getSalata().getId_sal();
-		case 4: return n.getSlatkis().getId_slat();
-		case 5: return n.getKolicinaGlavnogJele();
-		case 6: return n.getKolicinaSalate();
-		case 7: return n.getEmail();
-		case 8: return n.getDatumPorudzbine();
+		case 1: return n.getKlijent().getIme();
+		case 2: return n.getKlijent().getPrezime();
+		case 3: return n.getGlavnoJelo().getNaziv();
+		case 4: return n.getSalata().getNaziv();
+		case 5: return n.getSlatkis().getNaziv();
+		case 6: return n.getKolicinaGlavnogJele();
+		case 7: return n.getKolicinaSalate();
+		case 8: return n.getEmail();
+		case 9: return n.getDatumPorudzbine();
 		default: return "Greska!";
 		}
 	}
@@ -45,14 +46,15 @@ public class TableModelNarudzbina extends AbstractTableModel{
 	public String getColumnName(int c) {
 		switch(c) {
 		case 0: return "ID Narudzbine";
-		case 1: return "ID Klijenta";
-		case 2: return "ID Glavnog";
-		case 3: return "ID Salate";
-		case 4: return "ID Slatkisa";
-		case 5: return "Kol Glavnog jela" ;
-		case 6: return "Kolicina Salate";
-		case 7: return "Email";
-		case 8: return "Datum porudzbine";
+		case 1: return "Ime";
+		case 2: return "Prezime";
+		case 3: return "Glavno jelo";
+		case 4: return "Salata";
+		case 5: return "Slatkis";
+		case 6: return "Kol Glavnog jela" ;
+		case 7: return "Kolicina Salate";
+		case 8: return "Email";
+		case 9: return "Datum porudzbine";
 		default: return "Greska!";
 		}
 	}
