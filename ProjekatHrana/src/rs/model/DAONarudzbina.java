@@ -93,7 +93,7 @@ public class DAONarudzbina {
 		ArrayList<Narudzbina> lista=new ArrayList<Narudzbina>();
 
 		connect();
-		preparedStatement = connect.prepareStatement("select * from Narudzbina WHERE datumPorudzbine = ?");
+		preparedStatement = connect.prepareStatement("SELECT n.id_narudzbine, k.ime,k.prezime, g.naziv, sal.naziv, slat.naziv, KolicinaGlavnogJela, KolicinaSalate, n.Email, datumPorudzbine FROM Narudzbina n,Klijenti k,Glavno_jelo g,Salata sal,Slatkis slat WHERE n.id_klijenta=k.id_klijenta AND n.id_glj=g.id_glj AND n.id_sal=sal.id_sal AND n.id_slat=slat.id_slat AND datumPorudzbine = ?");
 
 		preparedStatement.setDate(1, datum);
 
@@ -104,26 +104,27 @@ public class DAONarudzbina {
 		while (resultSet.next()) {
 			pom=new Narudzbina();
 
-			pom.setId_narudzbine(resultSet.getInt("narudzbina.id_narudzbine"));
+			pom.setId_narudzbine(resultSet.getInt("n.id_narudzbine"));
 			Klijent klijent=new Klijent();
-			klijent.setId_klijenta(resultSet.getInt("id_klijenta"));
+			klijent.setIme(resultSet.getString("Ime"));
+			klijent.setPrezime(resultSet.getString("Prezime"));
 			pom.setKlijent(klijent);
 
 			GlavnoJelo glavno=new GlavnoJelo();
-			glavno.setId_glj(resultSet.getInt("id_glj"));
+			glavno.setNaziv(resultSet.getString("g.naziv"));
 			pom.setGlavnoJelo(glavno);
 
 			Salata salata=new Salata();
-			salata.setId_sal(resultSet.getInt("id_sal"));
+			salata.setNaziv(resultSet.getString("sal.naziv"));
 			pom.setSalata(salata);
 
 			Slatkis slatkis=new Slatkis();
-			slatkis.setId_slat(resultSet.getInt("id_slat"));
+			slatkis.setNaziv(resultSet.getString("slat.naziv"));
 			pom.setSlatkis(slatkis);
 
 			pom.setKolicinaGlavnogJele(resultSet.getInt("KolicinaGlavnogJela"));
 			pom.setKolicinaSalate(resultSet.getInt("KolicinaSalate"));
-			pom.setEmail(resultSet.getString("Email"));
+			pom.setEmail(resultSet.getString("n.Email"));
 			pom.setDatumPorudzbine(resultSet.getDate("datumPorudzbine"));
 			lista.add(pom);
 		}
