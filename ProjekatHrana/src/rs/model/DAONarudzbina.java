@@ -7,6 +7,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
@@ -17,10 +19,10 @@ public class DAONarudzbina {
 	private Statement statement = null;
 	private PreparedStatement preparedStatement = null;
 	private ResultSet resultSet = null;
-
+	SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
 	private void connect() throws ClassNotFoundException, SQLException {
-		Class.forName("com.mysql.cj.jdbc.Driver");
-		connect = DriverManager.getConnection("jdbc:mysql://localhost/Vezba3 ?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "root", "");
+		Class.forName("org.sqlite.JDBC");
+		connect = DriverManager.getConnection("jdbc:sqlite:/home/dev33/Documents/EclipsWorkspace/Baze/Vezba3 ");
 	}
 
 	public ArrayList<Narudzbina> selectNarudzbina() throws ClassNotFoundException, SQLException {
@@ -59,7 +61,7 @@ public class DAONarudzbina {
 			pom.setKolicinaGlavnogJele(resultSet.getInt("KolicinaGlavnogJela"));
 			pom.setKolicinaSalate(resultSet.getInt("KolicinaSalate"));
 			pom.setEmail(resultSet.getString("Email"));
-			pom.setDatumPorudzbine(resultSet.getDate("datumPorudzbine"));
+			pom.setDatumPorudzbine(resultSet.getString("datumPorudzbine"));
 
 			lista.add(pom);
 		}
@@ -81,21 +83,21 @@ public class DAONarudzbina {
 		preparedStatement.setInt(6, n.getKolicinaGlavnogJele());
 		preparedStatement.setInt(7, n.getKolicinaSalate());
 		preparedStatement.setString(8, n.getEmail());
-		preparedStatement.setDate(9, n.getDatumPorudzbine());
+		preparedStatement.setString(9, n.getDatumPorudzbine());
 
-		preparedStatement.execute();
+		preparedStatement.executeUpdate();
 
 		close();
 	}
-	public ArrayList<Narudzbina> selectNarudzbinaByDatum(Date datum) throws ClassNotFoundException, SQLException {
+	public ArrayList<Narudzbina> selectNarudzbinaByDatum(String datum) throws ClassNotFoundException, SQLException, ParseException {
 
 		Narudzbina pom = null;
 		ArrayList<Narudzbina> lista=new ArrayList<Narudzbina>();
 
 		connect();
-		preparedStatement = connect.prepareStatement("SELECT n.id_narudzbine, k.ime,k.prezime, g.naziv, sal.naziv, slat.naziv, KolicinaGlavnogJela, KolicinaSalate, n.Email, datumPorudzbine FROM Narudzbina n,Klijenti k,Glavno_jelo g,Salata sal,Slatkis slat WHERE n.id_klijenta=k.id_klijenta AND n.id_glj=g.id_glj AND n.id_sal=sal.id_sal AND n.id_slat=slat.id_slat AND datumPorudzbine = ?");
+		preparedStatement = connect.prepareStatement("SELECT n.id_narudzbine, k.ime,k.prezime, g.naziv, sal.nazivSalate, slat.nazivSlatkisa, KolicinaGlavnogJela, KolicinaSalate, n.Email, datumPorudzbine FROM Narudzbina n,Klijenti k,Glavno_jelo g,Salata sal,Slatkis slat WHERE n.id_klijenta=k.id_klijenta AND n.id_glj=g.id_glj AND n.id_sal=sal.id_sal AND n.id_slat=slat.id_slat AND datumPorudzbine = ?");
 
-		preparedStatement.setDate(1, datum);
+		preparedStatement.setString(1,datum);
 
 		preparedStatement.execute();
 
@@ -104,35 +106,35 @@ public class DAONarudzbina {
 		while (resultSet.next()) {
 			pom=new Narudzbina();
 
-			pom.setId_narudzbine(resultSet.getInt("n.id_narudzbine"));
+			pom.setId_narudzbine(resultSet.getInt("id_narudzbine"));
 			Klijent klijent=new Klijent();
 			klijent.setIme(resultSet.getString("Ime"));
 			klijent.setPrezime(resultSet.getString("Prezime"));
 			pom.setKlijent(klijent);
 
 			GlavnoJelo glavno=new GlavnoJelo();
-			glavno.setNaziv(resultSet.getString("g.naziv"));
+			glavno.setNaziv(resultSet.getString("naziv"));
 			pom.setGlavnoJelo(glavno);
 
 			Salata salata=new Salata();
-			salata.setNaziv(resultSet.getString("sal.naziv"));
+			salata.setNaziv(resultSet.getString("nazivSalate"));
 			pom.setSalata(salata);
 
 			Slatkis slatkis=new Slatkis();
-			slatkis.setNaziv(resultSet.getString("slat.naziv"));
+			slatkis.setNaziv(resultSet.getString("nazivSlatkisa"));
 			pom.setSlatkis(slatkis);
 
 			pom.setKolicinaGlavnogJele(resultSet.getInt("KolicinaGlavnogJela"));
 			pom.setKolicinaSalate(resultSet.getInt("KolicinaSalate"));
-			pom.setEmail(resultSet.getString("n.Email"));
-			pom.setDatumPorudzbine(resultSet.getDate("datumPorudzbine"));
+			pom.setEmail(resultSet.getString("Email"));
+			pom.setDatumPorudzbine(resultSet.getString("datumPorudzbine"));
 			lista.add(pom);
 		}
 		close();
 		return lista;
 
 	}
-	public Narudzbina selectNarudzbinaByID(int id) throws ClassNotFoundException, SQLException {
+	public Narudzbina selectNarudzbinaByID(int id) throws ClassNotFoundException, SQLException, ParseException {
 
 		Narudzbina pom = null;
 
@@ -180,7 +182,7 @@ public class DAONarudzbina {
 			pom.setKolicinaGlavnogJele(resultSet.getInt("KolicinaGlavnogJela"));
 			pom.setKolicinaSalate(resultSet.getInt("KolicinaSalate"));
 			pom.setEmail(resultSet.getString("Email"));
-			pom.setDatumPorudzbine(resultSet.getDate("datumPorudzbine"));
+			pom.setDatumPorudzbine(resultSet.getString("datumPorudzbine"));
 		}
 		close();
 		return pom;
@@ -208,14 +210,14 @@ public class DAONarudzbina {
 		close();
 		return false;
 	}
-	public boolean proveraNarudzbina(int id,Date datum) throws ClassNotFoundException, SQLException {
+	public boolean proveraNarudzbina(int id,String datum) throws ClassNotFoundException, SQLException, ParseException {
 
 		connect();
 
 		preparedStatement = connect.prepareStatement("select * from Narudzbina where id_klijenta=? AND datumPorudzbine=?");
 
 		preparedStatement.setInt(1, id);
-		preparedStatement.setDate(2, datum);
+		preparedStatement.setString(2,datum);
 
 		preparedStatement.execute();
 

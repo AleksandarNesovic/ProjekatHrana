@@ -15,8 +15,8 @@ public class DAOKlijent {
 	private ResultSet resultSet = null;
 
 	private void connect() throws ClassNotFoundException, SQLException {
-		Class.forName("com.mysql.cj.jdbc.Driver");
-		connect = DriverManager.getConnection("jdbc:mysql://localhost/Vezba3 ?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "root", "");
+		Class.forName("org.sqlite.JDBC");
+		connect = DriverManager.getConnection("jdbc:sqlite:/home/dev33/Documents/EclipsWorkspace/Baze/Vezba3 ");
 	}
 	
 		public ArrayList<Klijent> selectKlijenta() throws ClassNotFoundException, SQLException {

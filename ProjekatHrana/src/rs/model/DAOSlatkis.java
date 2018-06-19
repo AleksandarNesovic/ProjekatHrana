@@ -16,8 +16,8 @@ public class DAOSlatkis {
 	private ResultSet resultSet = null;
 
 	private void connect() throws ClassNotFoundException, SQLException {
-		Class.forName("com.mysql.cj.jdbc.Driver");
-		connect = DriverManager.getConnection("jdbc:mysql://localhost/Vezba3 ?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "root", "");
+		Class.forName("org.sqlite.JDBC");
+		connect = DriverManager.getConnection("jdbc:sqlite:/home/dev33/Documents/EclipsWorkspace/Baze/Vezba3 ");
 	}
 
 	
@@ -38,7 +38,7 @@ public class DAOSlatkis {
 		while (resultSet.next()) {
 			pom=new Slatkis();
 			pom.setId_slat(resultSet.getInt("id_slat"));
-			pom.setNaziv(resultSet.getString("naziv"));
+			pom.setNaziv(resultSet.getString("nazivSlatkisa"));
 			pom.setKolicina(resultSet.getInt("Kolicina"));
 			pom.setCena(resultSet.getDouble("cena"));
 
@@ -53,7 +53,7 @@ public class DAOSlatkis {
 	public void insertSlatkis(Slatkis slatkis) throws ClassNotFoundException, SQLException {
 
 		connect();
-		preparedStatement = connect.prepareStatement("INSERT INTO Slatkis(naziv, kolicina, cena) VALUES (?,?,?)");
+		preparedStatement = connect.prepareStatement("INSERT INTO Slatkis(nazivSlatkisa, kolicina, cena) VALUES (?,?,?)");
 
 		preparedStatement.setString(1, slatkis.getNaziv());
 		preparedStatement.setInt(2, slatkis.getKolicina());
@@ -92,7 +92,7 @@ public class DAOSlatkis {
 		if (resultSet.next()) {
 			slatkis = new Slatkis();
 			slatkis.setId_slat(resultSet.getInt("id_slat"));
-			slatkis.setNaziv(resultSet.getString("naziv"));
+			slatkis.setNaziv(resultSet.getString("nazivSlatkisa"));
 			slatkis.setKolicina(resultSet.getInt("Kolicina"));
 			slatkis.setCena(resultSet.getDouble("cena"));
 		}
@@ -115,7 +115,7 @@ public class DAOSlatkis {
 		if (resultSet.next()) {
 			slatkis = new Slatkis();
 			slatkis.setId_slat(resultSet.getInt("id_slat"));
-			slatkis.setNaziv(resultSet.getString("naziv"));
+			slatkis.setNaziv(resultSet.getString("nazivSlatkisa"));
 			slatkis.setKolicina(resultSet.getInt("Kolicina"));
 			slatkis.setCena(resultSet.getDouble("cena"));
 		}

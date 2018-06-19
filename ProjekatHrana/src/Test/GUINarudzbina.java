@@ -11,8 +11,6 @@ import javax.swing.border.EmptyBorder;
 
 import org.apache.log4j.Logger;
 
-import com.sun.mail.handlers.text_xml;
-
 import rs.model.DAOGlavnoJelo;
 import rs.model.DAOKlijent;
 import rs.model.DAONarudzbina;
@@ -26,7 +24,6 @@ import rs.model.SendEmail;
 import rs.model.Slatkis;
 import rs.model.TableModelNarudzbina;
 
-
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JButton;
@@ -34,6 +31,8 @@ import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.text.Format;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
@@ -243,20 +242,22 @@ public class GUINarudzbina extends JFrame {
 				}
 				try {
 					if(validacija()==true && validacijaIdKlijenta()==true) {
-						if(daoNarudzbina.proveraNarudzbina(klijent.getId_klijenta(), sqldate)==true) {
+						if(daoNarudzbina.proveraNarudzbina(klijent.getId_klijenta(), sqldate.toString())==true) {
 							
 							JOptionPane.showMessageDialog(null, "Klijent je vec porucio za navedeni datum");
 						}else {
 							
 							narudzbinaPom=new Narudzbina(klijent,pomGlavnoJelo, pomSalata, pomSlatkis, Integer.parseInt(textFieldKolicinaGklavnog.getText()),
-									Integer.parseInt(textFieldKolicinaSalate.getText()), textFieldMail.getText(),sqldate);
+									Integer.parseInt(textFieldKolicinaSalate.getText()), textFieldMail.getText(),sqldate.toString());
 							try {
 								daoNarudzbina.insertNarudzbina(narudzbinaPom);
 							} catch (ClassNotFoundException e1) {
 								// TODO Auto-generated catch block
+								logger.error("GRESAKA");
 								e1.printStackTrace();
 							} catch (SQLException e1) {
 								// TODO Auto-generated catch block
+								logger.error("GRESKA");
 								e1.printStackTrace();
 							}
 							JOptionPane.showMessageDialog(null, "Uspesno ste porucili");
@@ -270,6 +271,10 @@ public class GUINarudzbina extends JFrame {
 					}
 				} catch (NumberFormatException | HeadlessException | ClassNotFoundException | SQLException e1) {
 					// TODO Auto-generated catch block
+					logger.error("GRESKA");
+					e1.printStackTrace();
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}}
 		});
@@ -282,13 +287,16 @@ public class GUINarudzbina extends JFrame {
 				DAONarudzbina daoN=new DAONarudzbina();
 				java.sql.Date sqldate = new java.sql.Date(datePorudzbine.getDate().getTime());
 				try {
-					ArrayList<Narudzbina> lista=daoN.selectNarudzbinaByDatum(sqldate);
+					ArrayList<Narudzbina> lista=daoN.selectNarudzbinaByDatum(sqldate.toString());
 					TableModelNarudzbina tmn=new TableModelNarudzbina(lista);
 					tableNarudzbina.setModel(tmn);
 				} catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (ParseException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
@@ -326,6 +334,9 @@ public class GUINarudzbina extends JFrame {
 					e1.printStackTrace();
 				} catch (SQLException e1) {
 					logger.error("GRESKA! Poruka: "+e1.getMessage());
+					e1.printStackTrace();
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				}

@@ -16,8 +16,8 @@ public class DAOSalata {
 	private ResultSet resultSet = null;
 
 	private void connect() throws ClassNotFoundException, SQLException {
-		Class.forName("com.mysql.cj.jdbc.Driver");
-		connect = DriverManager.getConnection("jdbc:mysql://localhost/Vezba3 ?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "root", "");
+		Class.forName("org.sqlite.JDBC");
+		connect = DriverManager.getConnection("jdbc:sqlite:/home/dev33/Documents/EclipsWorkspace/Baze/Vezba3 ");
 	}
 
 	
@@ -38,7 +38,7 @@ public class DAOSalata {
 		while (resultSet.next()) {
 			pom=new Salata();
 			pom.setId_sal(resultSet.getInt("id_sal"));
-			pom.setNaziv(resultSet.getString("naziv"));
+			pom.setNaziv(resultSet.getString("nazivSalate"));
 			pom.setCena(resultSet.getDouble("cena"));
 
 			lista.add(pom);
@@ -51,7 +51,7 @@ public class DAOSalata {
 	public void insertSalata(Salata salata) throws ClassNotFoundException, SQLException {
 
 		connect();
-		preparedStatement = connect.prepareStatement("INSERT INTO Salata(naziv, porcija, cena) VALUES (?,?,?)");
+		preparedStatement = connect.prepareStatement("INSERT INTO Salata(nazivSalate, porcija, cena) VALUES (?,?,?)");
 
 		preparedStatement.setString(1, salata.getNaziv());
 		preparedStatement.setDouble(3, salata.getCena());
@@ -89,7 +89,7 @@ public class DAOSalata {
 		if (resultSet.next()) {
 			salata = new Salata();
 			salata.setId_sal(resultSet.getInt("id_sal"));
-			salata.setNaziv(resultSet.getString("naziv"));
+			salata.setNaziv(resultSet.getString("nazivSalate"));
 			salata.setCena(resultSet.getDouble("cena"));
 		}
 		
@@ -109,7 +109,7 @@ public class DAOSalata {
 		if (resultSet.next()) {
 			salata = new Salata();
 			salata.setId_sal(resultSet.getInt("id_sal"));
-			salata.setNaziv(resultSet.getString("naziv"));
+			salata.setNaziv(resultSet.getString("nazivSalate"));
 			salata.setCena(resultSet.getDouble("cena"));
 		}
 		
@@ -131,7 +131,7 @@ public class DAOSalata {
 		if (resultSet.next()) {
 			salata = new Salata();
 			salata.setId_sal(resultSet.getInt("id_sal"));
-			salata.setNaziv(resultSet.getString("naziv"));
+			salata.setNaziv(resultSet.getString("nazivSalate"));
 			salata.setCena(resultSet.getDouble("cena"));
 		}
 		
