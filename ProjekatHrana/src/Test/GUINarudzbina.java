@@ -264,7 +264,6 @@ public class GUINarudzbina extends JFrame {
 							JOptionPane.showMessageDialog(null, "Uspesno ste porucili");
 							logger.info("Narudzbina uspesno izvrsena");
 						}
-						sum=((pomGlavnoJelo.getCena()/1000)*Integer.parseInt(textFieldKolicinaGklavnog.getText()))+((pomSalata.getCena()/1000)*Integer.parseInt(textFieldKolicinaSalate.getText()))+pomSlatkis.getCena();
 
 					}else {
 						JOptionPane.showMessageDialog(null, "Popunite sva polja.Unesite ispravan ID klijenta ili email adresu");

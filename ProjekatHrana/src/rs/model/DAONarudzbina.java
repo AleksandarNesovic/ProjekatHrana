@@ -154,9 +154,8 @@ public class DAONarudzbina {
 	public Narudzbina selectNarudzbinaByID(int id) throws ClassNotFoundException, SQLException, ParseException {
 	
 		Narudzbina pom = null;
-		try {
 		connect();
-		preparedStatement = connect.prepareStatement("select * from Narudzbina,Glavno_jelo,Klijenti,Salata,Slatkis WHERE id_narudzbine = ?");
+		preparedStatement = connect.prepareStatement("SELECT n.id_narudzbine, k.ime,k.prezime, g.naziv,g.cena, sal.nazivSalate,sal.cenaSalate, slat.nazivSlatkisa,slat.cenaSlatkisa, KolicinaGlavnogJela, KolicinaSalate, n.Email, datumPorudzbine FROM Narudzbina n,Klijenti k,Glavno_jelo g,Salata sal,Slatkis slat WHERE n.id_klijenta=k.id_klijenta AND n.id_glj=g.id_glj AND n.id_sal=sal.id_sal AND n.id_slat=slat.id_slat AND id_narudzbine = ?");
 
 		preparedStatement.setInt(1, id);
 
@@ -170,29 +169,22 @@ public class DAONarudzbina {
 			pom.setId_narudzbine(resultSet.getInt("id_narudzbine"));
 
 			Klijent klijent=new Klijent();
-			klijent.setId_klijenta(resultSet.getInt("id_klijenta"));
 			klijent.setIme(resultSet.getString("Ime"));
 			klijent.setPrezime(resultSet.getString("Prezime"));
-			klijent.setBrojTelefona(resultSet.getString("BrojTelefona"));
-			klijent.setEmail(resultSet.getString("EmailKlijenta"));
 			pom.setKlijent(klijent);
 
 			GlavnoJelo glavno=new GlavnoJelo();
-			glavno.setId_glj(resultSet.getInt("id_glj"));
 			glavno.setNaziv(resultSet.getString("naziv"));
 			glavno.setCena(resultSet.getDouble("cena"));
 			pom.setGlavnoJelo(glavno);
 
 			Salata salata=new Salata();
-			salata.setId_sal(resultSet.getInt("id_sal"));
 			salata.setNaziv(resultSet.getString("nazivSalate"));
 			salata.setCena(resultSet.getDouble("cenaSalate"));
 			pom.setSalata(salata);
 
 			Slatkis slatkis=new Slatkis();
-			slatkis.setId_slat(resultSet.getInt("id_slat"));
 			slatkis.setNaziv(resultSet.getString("nazivSlatkisa"));
-			slatkis.setKolicina(resultSet.getInt("Kolicina"));
 			slatkis.setCena(resultSet.getDouble("cenaSlatkisa"));
 			pom.setSlatkis(slatkis);
 
@@ -200,13 +192,6 @@ public class DAONarudzbina {
 			pom.setKolicinaSalate(resultSet.getInt("KolicinaSalate"));
 			pom.setEmail(resultSet.getString("Email"));
 			pom.setDatumPorudzbine(resultSet.getString("datumPorudzbine"));
-		}}finally {
-			try {
-				if(preparedStatement!=null && !preparedStatement.isClosed()) {
-					preparedStatement.close();
-				} }catch (SQLException e) {
-					System.out.println(e.getMessage());
-				}
 			}
 		close();
 		return pom;
@@ -228,9 +213,7 @@ public class DAONarudzbina {
 			pom=new Narudzbina();
 			pom.setId_narudzbine(resultSet.getInt("id_narudzbine"));
 			if(pom.getId_narudzbine()==id)
-				
 				return true;
-			
 		}}finally {
 			try {
 				if(preparedStatement!=null && !preparedStatement.isClosed()) {
