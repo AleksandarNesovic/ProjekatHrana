@@ -40,7 +40,7 @@ public class DAOSlatkis {
 			pom.setId_slat(resultSet.getInt("id_slat"));
 			pom.setNaziv(resultSet.getString("nazivSlatkisa"));
 			pom.setKolicina(resultSet.getInt("Kolicina"));
-			pom.setCena(resultSet.getDouble("cena"));
+			pom.setCena(resultSet.getDouble("cenaSlatkisa"));
 
 
 			lista.add(pom);
@@ -53,7 +53,7 @@ public class DAOSlatkis {
 	public void insertSlatkis(Slatkis slatkis) throws ClassNotFoundException, SQLException {
 
 		connect();
-		preparedStatement = connect.prepareStatement("INSERT INTO Slatkis(nazivSlatkisa, kolicina, cena) VALUES (?,?,?)");
+		preparedStatement = connect.prepareStatement("INSERT INTO Slatkis(nazivSlatkisa, kolicina, cenaSlatkisa) VALUES (?,?,?)");
 
 		preparedStatement.setString(1, slatkis.getNaziv());
 		preparedStatement.setInt(2, slatkis.getKolicina());
@@ -81,7 +81,7 @@ public class DAOSlatkis {
 		Slatkis slatkis = null;
 		
 		connect();
-		preparedStatement = connect.prepareStatement("select * from Slatkis WHERE naziv= ?");
+		preparedStatement = connect.prepareStatement("select * from Slatkis WHERE nazivSlatkisa= ?");
 
 		preparedStatement.setString(1, naziv);
 		
@@ -94,7 +94,7 @@ public class DAOSlatkis {
 			slatkis.setId_slat(resultSet.getInt("id_slat"));
 			slatkis.setNaziv(resultSet.getString("nazivSlatkisa"));
 			slatkis.setKolicina(resultSet.getInt("Kolicina"));
-			slatkis.setCena(resultSet.getDouble("cena"));
+			slatkis.setCena(resultSet.getDouble("cenaSlatkisa"));
 		}
 		
 		close();
@@ -117,7 +117,7 @@ public class DAOSlatkis {
 			slatkis.setId_slat(resultSet.getInt("id_slat"));
 			slatkis.setNaziv(resultSet.getString("nazivSlatkisa"));
 			slatkis.setKolicina(resultSet.getInt("Kolicina"));
-			slatkis.setCena(resultSet.getDouble("cena"));
+			slatkis.setCena(resultSet.getDouble("cenaSlatkisa"));
 		}
 		
 		close();

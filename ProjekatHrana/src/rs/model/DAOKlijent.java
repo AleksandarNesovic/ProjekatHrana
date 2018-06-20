@@ -1,6 +1,7 @@
 package rs.model;
 
 import java.sql.Connection;
+
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,7 +24,7 @@ public class DAOKlijent {
 
 			ArrayList<Klijent> lista = new ArrayList<Klijent>();
 			Klijent pom=null;
-
+			try {
 			connect();
 			preparedStatement = connect.prepareStatement("select * from Klijenti");
 			
@@ -37,10 +38,17 @@ public class DAOKlijent {
 				pom.setIme(resultSet.getString("Ime"));
 				pom.setPrezime(resultSet.getString("Prezime"));
 				pom.setBrojTelefona(resultSet.getString("BrojTelefona"));
-				pom.setEmail(resultSet.getString("Email"));
+				pom.setEmail(resultSet.getString("EmailKlijenta"));
 
 				lista.add(pom);
-			}
+			}}finally {
+				try {
+					if(preparedStatement!=null && !preparedStatement.isClosed()) {
+						preparedStatement.close();
+					} }catch (SQLException e) {
+						System.out.println(e.getMessage());
+					}
+				}
 			close();
 			return lista;
 		}
@@ -48,7 +56,7 @@ public class DAOKlijent {
 		public Klijent selectKlijentaById(int id) throws ClassNotFoundException, SQLException {
 
 			Klijent pom=null;
-
+			try {
 			connect();
 			
 			preparedStatement = connect.prepareStatement("select * from Klijenti WHERE id_klijenta=?");
@@ -65,16 +73,24 @@ public class DAOKlijent {
 				pom.setIme(resultSet.getString("Ime"));
 				pom.setPrezime(resultSet.getString("Prezime"));
 				pom.setBrojTelefona(resultSet.getString("BrojTelefona"));
-				pom.setEmail(resultSet.getString("Email"));
+				pom.setEmail(resultSet.getString("EmailKlijenta"));
+				
+			}}finally {
+				try {
+					if(preparedStatement!=null && !preparedStatement.isClosed()) {
+						preparedStatement.close();
+					} }catch (SQLException e) {
+						System.out.println(e.getMessage());
+					}
+				}
 
-			}
 			close();
 			return pom;
 		}
 		public boolean searchById(int id) throws ClassNotFoundException, SQLException {
 			
 			Klijent pom=null;
-			
+			try {
 			connect();
 			
 			preparedStatement=connect.prepareStatement("select id_klijenta from Klijenti");
@@ -88,8 +104,16 @@ public class DAOKlijent {
 				pom.setId_klijenta(resultSet.getInt("id_klijenta"));
 				if(pom.getId_klijenta()==id)
 					return true;
-			}
-			
+				
+				
+			}}finally {
+				try {
+					if(preparedStatement!=null && !preparedStatement.isClosed()) {
+						preparedStatement.close();
+					} }catch (SQLException e) {
+						System.out.println(e.getMessage());
+					}
+				}
 			close();
 			return false;
 		}

@@ -39,7 +39,6 @@ public class DAOGlavnoJelo {
 			pom.setNaziv(resultSet.getString("naziv"));
 			pom.setCena(resultSet.getDouble("cena"));
 
-
 			lista.add(pom);
 		}
 
@@ -192,6 +191,7 @@ public class DAOGlavnoJelo {
 			if (connect != null) {
 				connect.close();
 			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -39,7 +39,7 @@ public class DAOSalata {
 			pom=new Salata();
 			pom.setId_sal(resultSet.getInt("id_sal"));
 			pom.setNaziv(resultSet.getString("nazivSalate"));
-			pom.setCena(resultSet.getDouble("cena"));
+			pom.setCena(resultSet.getDouble("cenaSalate"));
 
 			lista.add(pom);
 		}
@@ -51,7 +51,7 @@ public class DAOSalata {
 	public void insertSalata(Salata salata) throws ClassNotFoundException, SQLException {
 
 		connect();
-		preparedStatement = connect.prepareStatement("INSERT INTO Salata(nazivSalate, porcija, cena) VALUES (?,?,?)");
+		preparedStatement = connect.prepareStatement("INSERT INTO Salata(nazivSalate, porcija, cenaSalate) VALUES (?,?,?)");
 
 		preparedStatement.setString(1, salata.getNaziv());
 		preparedStatement.setDouble(3, salata.getCena());
@@ -78,7 +78,7 @@ public class DAOSalata {
 		Salata salata = null;
 		
 		connect();
-		preparedStatement = connect.prepareStatement("select * from Salata WHERE naziv= ?");
+		preparedStatement = connect.prepareStatement("select * from Salata WHERE nazivSalate= ?");
 
 		preparedStatement.setString(1, naziv);
 		
@@ -90,7 +90,7 @@ public class DAOSalata {
 			salata = new Salata();
 			salata.setId_sal(resultSet.getInt("id_sal"));
 			salata.setNaziv(resultSet.getString("nazivSalate"));
-			salata.setCena(resultSet.getDouble("cena"));
+			salata.setCena(resultSet.getDouble("cenaSalate"));
 		}
 		
 		close();
@@ -110,7 +110,7 @@ public class DAOSalata {
 			salata = new Salata();
 			salata.setId_sal(resultSet.getInt("id_sal"));
 			salata.setNaziv(resultSet.getString("nazivSalate"));
-			salata.setCena(resultSet.getDouble("cena"));
+			salata.setCena(resultSet.getDouble("cenaSalate"));
 		}
 		
 		close();
@@ -132,7 +132,7 @@ public class DAOSalata {
 			salata = new Salata();
 			salata.setId_sal(resultSet.getInt("id_sal"));
 			salata.setNaziv(resultSet.getString("nazivSalate"));
-			salata.setCena(resultSet.getDouble("cena"));
+			salata.setCena(resultSet.getDouble("cenaSalate"));
 		}
 		
 		close();

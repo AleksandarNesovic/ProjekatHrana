@@ -249,6 +249,7 @@ public class GUINarudzbina extends JFrame {
 							
 							narudzbinaPom=new Narudzbina(klijent,pomGlavnoJelo, pomSalata, pomSlatkis, Integer.parseInt(textFieldKolicinaGklavnog.getText()),
 									Integer.parseInt(textFieldKolicinaSalate.getText()), textFieldMail.getText(),sqldate.toString());
+							
 							try {
 								daoNarudzbina.insertNarudzbina(narudzbinaPom);
 							} catch (ClassNotFoundException e1) {
@@ -294,7 +295,7 @@ public class GUINarudzbina extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
+					//TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (ParseException e1) {
 					// TODO Auto-generated catch block
@@ -336,8 +337,8 @@ public class GUINarudzbina extends JFrame {
 					logger.error("GRESKA! Poruka: "+e1.getMessage());
 					e1.printStackTrace();
 				} catch (ParseException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 				}
 				}
 				
