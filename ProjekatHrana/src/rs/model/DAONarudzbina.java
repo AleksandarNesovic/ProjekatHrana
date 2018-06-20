@@ -137,7 +137,7 @@ public class DAONarudzbina {
 		Narudzbina pom = null;
 
 		connect();
-		preparedStatement = connect.prepareStatement("select * from Narudzbina,Glavno_jelo,Klijenti,Salata,Slatkis WHERE id_narudzbine = ?");
+		preparedStatement = connect.prepareStatement("SELECT n.id_narudzbine, k.ime,k.prezime, g.naziv,g.cena, sal.naziv,sal.cena, slat.naziv,slat.cena, KolicinaGlavnogJela, KolicinaSalate, n.Email, datumPorudzbine FROM Narudzbina n,Klijenti k,Glavno_jelo g,Salata sal,Slatkis slat WHERE n.id_klijenta=k.id_klijenta AND n.id_glj=g.id_glj AND n.id_sal=sal.id_sal AND n.id_slat=slat.id_slat AND id_narudzbine = ?");
 
 		preparedStatement.setInt(1, id);
 
@@ -151,35 +151,28 @@ public class DAONarudzbina {
 			pom.setId_narudzbine(resultSet.getInt("id_narudzbine"));
 
 			Klijent klijent=new Klijent();
-			klijent.setId_klijenta(resultSet.getInt("id_klijenta"));
 			klijent.setIme(resultSet.getString("Ime"));
 			klijent.setPrezime(resultSet.getString("Prezime"));
-			klijent.setBrojTelefona(resultSet.getString("BrojTelefona"));
-			klijent.setEmail(resultSet.getString("Email"));
 			pom.setKlijent(klijent);
 
 			GlavnoJelo glavno=new GlavnoJelo();
-			glavno.setId_glj(resultSet.getInt("id_glj"));
-			glavno.setNaziv(resultSet.getString("glavno_jelo.naziv"));
-			glavno.setCena(resultSet.getDouble("glavno_jelo.cena"));
+			glavno.setNaziv(resultSet.getString("g.naziv"));
+			glavno.setCena(resultSet.getDouble("g.cena"));
 			pom.setGlavnoJelo(glavno);
 
 			Salata salata=new Salata();
-			salata.setId_sal(resultSet.getInt("id_sal"));
-			salata.setNaziv(resultSet.getString("salata.naziv"));
-			salata.setCena(resultSet.getDouble("salata.cena"));
+			salata.setNaziv(resultSet.getString("sal.naziv"));
+			salata.setCena(resultSet.getDouble("sal.cena"));
 			pom.setSalata(salata);
 
 			Slatkis slatkis=new Slatkis();
-			slatkis.setId_slat(resultSet.getInt("id_slat"));
-			slatkis.setNaziv(resultSet.getString("slatkis.naziv"));
-			slatkis.setKolicina(resultSet.getInt("slatkis.Kolicina"));
-			slatkis.setCena(resultSet.getDouble("slatkis.cena"));
+			slatkis.setNaziv(resultSet.getString("slat.naziv"));
+			slatkis.setCena(resultSet.getDouble("slat.cena"));
 			pom.setSlatkis(slatkis);
 
 			pom.setKolicinaGlavnogJele(resultSet.getInt("KolicinaGlavnogJela"));
 			pom.setKolicinaSalate(resultSet.getInt("KolicinaSalate"));
-			pom.setEmail(resultSet.getString("Email"));
+			pom.setEmail(resultSet.getString("n.Email"));
 			pom.setDatumPorudzbine(resultSet.getDate("datumPorudzbine"));
 		}
 		close();
