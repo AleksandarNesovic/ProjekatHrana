@@ -165,7 +165,10 @@ public class DAONarudzbina {
 		Narudzbina pom = null;
 		try {
 		connect();
+
 		preparedStatement = connect.prepareStatement("SELECT n.id_narudzbine, k.ime,k.prezime, g.naziv,g.cena, sal.nazivSalate,sal.cenaSalate, slat.nazivSlatkisa,slat.cenaSlatkisa, KolicinaGlavnogJela, KolicinaSalate, n.Email, datumPorudzbine FROM Narudzbina n,Klijenti k,Glavno_jelo g,Salata sal,Slatkis slat WHERE n.id_klijenta=k.id_klijenta AND n.id_glj=g.id_glj AND n.id_sal=sal.id_sal AND n.id_slat=slat.id_slat AND id_narudzbine = ?");
+
+		
 
 		preparedStatement.setInt(1, id);
 
@@ -184,6 +187,7 @@ public class DAONarudzbina {
 			pom.setKlijent(klijent);
 
 			GlavnoJelo glavno=new GlavnoJelo();
+
 			glavno.setNaziv(resultSet.getString("naziv"));
 			glavno.setCena(resultSet.getDouble("cena"));
 			pom.setGlavnoJelo(glavno);
@@ -196,10 +200,12 @@ public class DAONarudzbina {
 			Slatkis slatkis=new Slatkis();
 			slatkis.setNaziv(resultSet.getString("nazivSlatkisa"));
 			slatkis.setCena(resultSet.getDouble("cenaSlatkisa"));
+
 			pom.setSlatkis(slatkis);
 
 			pom.setKolicinaGlavnogJele(resultSet.getInt("KolicinaGlavnogJela"));
 			pom.setKolicinaSalate(resultSet.getInt("KolicinaSalate"));
+
 			pom.setEmail(resultSet.getString("Email"));
 			pom.setDatumPorudzbine(resultSet.getString("datumPorudzbine"));
 			}}finally {
@@ -209,6 +215,7 @@ public class DAONarudzbina {
 					} }catch (SQLException e) {
 						System.out.println(e.getMessage());
 					}}
+
 		close();
 		return pom;
 
