@@ -7,5 +7,6 @@
 	<classpathentry kind="lib" path="/home/dev33/Downloads/jaf-1.1.1/activation.jar"/>
 	<classpathentry kind="lib" path="jcalendar-1.4.jar"/>
 	<classpathentry kind="lib" path="/home/dev33/Downloads/apache-log4j-1.2.17/log4j-1.2.17.jar"/>
-	<classpathentry kind="output" path="bin"/>
+	<classpathentry kind="lib" path="/home/dev33/Downloads/sqlite-jdbc-3.23.1.jar"/>
+ <classpathentry kind="output" path="bin"/>
 </classpath>

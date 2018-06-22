@@ -2,6 +2,8 @@ package Test;
 
 import java.awt.Color;
 
+
+
 import java.awt.EventQueue;
 import java.awt.HeadlessException;
 
@@ -10,8 +12,6 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import org.apache.log4j.Logger;
-
-import com.sun.mail.handlers.text_xml;
 
 import rs.model.DAOGlavnoJelo;
 import rs.model.DAOKlijent;
@@ -26,30 +26,31 @@ import rs.model.SendEmail;
 import rs.model.Slatkis;
 import rs.model.TableModelNarudzbina;
 
-
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
-import java.sql.Date;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
 
 import javax.swing.JTable;
 
 public class GUINarudzbina extends JFrame {
-	
+
 	private static final Logger logger=Logger.getLogger(GUINarudzbina.class);
 	
+	DAOGlavnoJelo daoGlavno=new DAOGlavnoJelo();
 	DAONarudzbina daoNarudzbina=new DAONarudzbina();
 	Narudzbina narudzbinaPom=new Narudzbina();
 	Narudzbina narudzbina=new Narudzbina();
@@ -64,6 +65,8 @@ public class GUINarudzbina extends JFrame {
 	DAOSlatkis dslatkis=new DAOSlatkis();
 	private JTextField textFieldMail;
 	static JTextFieldDateEditor dtEditor;
+	DAOSalata daoSalata=new DAOSalata();
+	DAOSlatkis daoSlatkis=new DAOSlatkis();
 
 	private JPanel contentPane;
 	private JTextField textFieldKolicinaGklavnog;
@@ -78,7 +81,7 @@ public class GUINarudzbina extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		
+
 
 
 		EventQueue.invokeLater(new Runnable() {
@@ -93,14 +96,46 @@ public class GUINarudzbina extends JFrame {
 			}
 		});
 	}
+
 	/**
 	 * Create the frame.
 	 */
 	public GUINarudzbina() {
-		
-		
+		try {
+			daoNarudzbina.createTable();
+			daoSalata.createTable();
+			daoSlatkis.createTable();
+			daoKlijent.createTable();
+			daoGlavno.createTable();
+			daoKlijent.insert("Pera", "Peric", "0656985123", "peraperic@gmail.com");
+			daoKlijent.insert("Mika", "Mikic", "0639856789", "mikamikic@gmail.com");
+			daoKlijent.insert("Toma", "Tomic", "0645823147", "tomatomic@gmail.com");
+			daoKlijent.insert("Zika", "Zikic", "0698745632", "zikazikic@gmail.com");
+			daoSalata.insert("Sopska salata", 300);
+			daoSalata.insert("Ruska salataa", 350);
+			daoSalata.insert("Kupus salata", 200);
+			daoSalata.insert("Cezar salata", 700);
+			daoSlatkis.insert("Sam rolna", 120, 150);
+			daoSlatkis.insert("Jaffa", 110, 105);
+			daoSlatkis.insert("Cokolada", 300, 350);
+			daoSlatkis.insert("Sladoled", 240, 170);
+			daoSlatkis.insert("Rum kasato", 80, 75);
+			daoGlavno.insert("Karadjordjeva", 1600);
+			daoGlavno.insert("Pasulj", 400);
+			daoGlavno.insert("Punjeni batak", 1400);
+			daoGlavno.insert("Pileci paketici", 1300);
+			daoGlavno.insert("Cevapi", 800);
+			daoGlavno.insert("Gulas", 900);
+		} catch (ClassNotFoundException e3) {
+			// TODO Auto-generated catch block
+			e3.printStackTrace();
+		} catch (SQLException e3) {
+			// TODO Auto-generated catch block
+			e3.printStackTrace();
+		}
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(700, 200, 600, 600);
+		setBounds(700, 200, 600, 700);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -138,7 +173,7 @@ public class GUINarudzbina extends JFrame {
 		datePorudzbine.setBounds(391, 284, 151, 19);
 		datePorudzbine.setDate(datum);
 		contentPane.add(datePorudzbine);
-		
+
 		textFieldIdNarudzbine = new JTextField();
 		textFieldIdNarudzbine.addKeyListener(new KeyAdapter() {
 			@Override
@@ -220,6 +255,7 @@ public class GUINarudzbina extends JFrame {
 		btnNaruci.setBounds(30, 284, 117, 25);
 		btnNaruci.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 				logger.info("Izvrsavanje narudzbine");
 				GlavnoJelo pomGlavnoJelo=(GlavnoJelo) comboBoxGlavno.getSelectedItem();
 				Salata	pomSalata=(Salata) comboBoxSalata.getSelectedItem();
@@ -242,33 +278,44 @@ public class GUINarudzbina extends JFrame {
 					e2.printStackTrace();
 				}
 				try {
-					if(validacija()==true && validacijaIdKlijenta()==true) {
-						if(daoNarudzbina.proveraNarudzbina(klijent.getId_klijenta(), sqldate)==true) {
-							
+					if(validacija()==true && validacijaIdKlijenta()==true && validacijaEmail()==true) {
+						if(daoNarudzbina.proveraNarudzbina(klijent.getId_klijenta(), sqldate.toString())==true) {
+
 							JOptionPane.showMessageDialog(null, "Klijent je vec porucio za navedeni datum");
-						}else {
 							
+						}else {
+
 							narudzbinaPom=new Narudzbina(klijent,pomGlavnoJelo, pomSalata, pomSlatkis, Integer.parseInt(textFieldKolicinaGklavnog.getText()),
-									Integer.parseInt(textFieldKolicinaSalate.getText()), textFieldMail.getText(),sqldate);
+									Integer.parseInt(textFieldKolicinaSalate.getText()), textFieldMail.getText(),sqldate.toString());
+
 							try {
+								
 								daoNarudzbina.insertNarudzbina(narudzbinaPom);
+								clearFields();
+
 							} catch (ClassNotFoundException e1) {
 								// TODO Auto-generated catch block
+								logger.error("GRESAKA");
 								e1.printStackTrace();
 							} catch (SQLException e1) {
 								// TODO Auto-generated catch block
+								logger.error("GRESKA");
 								e1.printStackTrace();
 							}
 							JOptionPane.showMessageDialog(null, "Uspesno ste porucili");
 							logger.info("Narudzbina uspesno izvrsena");
 						}
-						sum=((pomGlavnoJelo.getCena()/1000)*Integer.parseInt(textFieldKolicinaGklavnog.getText()))+((pomSalata.getCena()/1000)*Integer.parseInt(textFieldKolicinaSalate.getText()))+pomSlatkis.getCena();
 
 					}else {
-						JOptionPane.showMessageDialog(null, "Popunite sva polja.Unesite ispravan ID klijenta ili email adresu");
+						
+						JOptionPane.showMessageDialog(null, "Popunite sva polja.Unesite ispravan ID klijenta");
 						logger.warn("Polja nisu uspesno popnjena");
 					}
 				} catch (NumberFormatException | HeadlessException | ClassNotFoundException | SQLException e1) {
+					// TODO Auto-generated catch block
+					logger.error("GRESKA");
+					e1.printStackTrace();
+				} catch (ParseException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}}
@@ -282,13 +329,16 @@ public class GUINarudzbina extends JFrame {
 				DAONarudzbina daoN=new DAONarudzbina();
 				java.sql.Date sqldate = new java.sql.Date(datePorudzbine.getDate().getTime());
 				try {
-					ArrayList<Narudzbina> lista=daoN.selectNarudzbinaByDatum(sqldate);
+					ArrayList<Narudzbina> lista=daoN.selectNarudzbinaByDatum(sqldate.toString());
 					TableModelNarudzbina tmn=new TableModelNarudzbina(lista);
 					tableNarudzbina.setModel(tmn);
 				} catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (SQLException e1) {
+					//TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (ParseException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
@@ -301,35 +351,40 @@ public class GUINarudzbina extends JFrame {
 		btnPosaljiPorudzbinu.setBounds(163, 531, 261, 40);
 		btnPosaljiPorudzbinu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 				logger.info("Pokusaj slanja na mail");
 				DAONarudzbina daoN=new DAONarudzbina();
 				String textmail=textFieldMail.getText();
+				
 				if(textFieldIdNarudzbine.getText().isEmpty()) {
 					JOptionPane.showMessageDialog(null, "Unesite ispravan Id narudzbine!");
 				}else {
-				try {
-					Narudzbina pom=new Narudzbina();
-					if(textmail.contains("@") && textmail.contains(".") && validacijaIDNarudzbine()==true) {
-						pom=daoN.selectNarudzbinaByID(Integer.parseInt(textFieldIdNarudzbine.getText()));
-						double sum=((pom.getGlavnoJelo().getCena()/1000)*pom.getKolicinaGlavnogJele()+(pom.getSalata().getCena()/1000)*pom.getKolicinaSalate()+pom.getSlatkis().getCena());
-						mail=new SendEmail(textmail, "Narudzbina", pom.toString()+sum);
-						JOptionPane.showMessageDialog(null, "Narudzbina poslata na mail");
-					}else {
-						JOptionPane.showMessageDialog(null, "Unesite ispravnu email adresu i Id narudzbine");
-						logger.warn("Uneta netacna email adresa ili ID narudzbine");
+					try {
+						Narudzbina pom=new Narudzbina();
+						if(validacijaEmail()==true && validacijaIDNarudzbine()==true) {
+							pom=daoN.selectNarudzbinaByID(Integer.parseInt(textFieldIdNarudzbine.getText()));
+							double sum=((pom.getGlavnoJelo().getCena()/1000)*pom.getKolicinaGlavnogJele()+(pom.getSalata().getCena()/1000)*pom.getKolicinaSalate()+pom.getSlatkis().getCena());
+							mail=new SendEmail(textmail, "Narudzbina", pom.toString()+sum);
+							JOptionPane.showMessageDialog(null, "Narudzbina poslata na mail");
+						}else {
+							JOptionPane.showMessageDialog(null, "Unesite ispravnu email adresu i Id narudzbine");
+							logger.warn("Uneta netacna email adresa ili ID narudzbine");
+						}
+					} catch (NumberFormatException e1) {
+						logger.error("GRESKA! Poruka: "+e1.getMessage());
+						e1.printStackTrace();
+					} catch (ClassNotFoundException e1) {
+						logger.error("GRESKA! Poruka: "+e1.getMessage());
+						e1.printStackTrace();
+					} catch (SQLException e1) {
+						logger.error("GRESKA! Poruka: "+e1.getMessage());
+						e1.printStackTrace();
+					} catch (ParseException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
 					}
-				} catch (NumberFormatException e1) {
-					logger.error("GRESKA! Poruka: "+e1.getMessage());
-					e1.printStackTrace();
-				} catch (ClassNotFoundException e1) {
-					logger.error("GRESKA! Poruka: "+e1.getMessage());
-					e1.printStackTrace();
-				} catch (SQLException e1) {
-					logger.error("GRESKA! Poruka: "+e1.getMessage());
-					e1.printStackTrace();
 				}
-				}
-				
+
 			}
 		});
 		contentPane.add(btnPosaljiPorudzbinu);
@@ -338,25 +393,19 @@ public class GUINarudzbina extends JFrame {
 		lblKolicina.setBounds(110, 160, 170, 25);
 		contentPane.add(lblKolicina);
 
-
-
 		JLabel lblIdKlijenta = new JLabel("ID klijenta:");
 		lblIdKlijenta.setBounds(412, 165, 99, 15);
 		contentPane.add(lblIdKlijenta);
-		
-		
-		
+
 		JLabel lblIdNarudzbine = new JLabel("ID Narudzbine:");
 		lblIdNarudzbine.setBounds(443, 470, 117, 15);
 		contentPane.add(lblIdNarudzbine);
-
-
 	}
 	private void popunicomboBoxSlatkis(){
-		
+
 		ArrayList<Slatkis> listaSlatkisa=new ArrayList<Slatkis>();
 		DAOSlatkis daoSlatkis=new DAOSlatkis();
-		
+
 		try {
 			listaSlatkisa=daoSlatkis.selectSlatkis();
 			for (Slatkis slatkis : listaSlatkisa) {
@@ -402,13 +451,11 @@ public class GUINarudzbina extends JFrame {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
 	private boolean validacija() {
-		
-		if(textFieldKolicinaGklavnog.getText().isEmpty() || textFieldKolicinaSalate.getText().isEmpty() || textFieldMail.getText().isEmpty() ||
-				textFieldIdKlijenta.getText().isEmpty() || !(textFieldMail.getText().contains("@") && textFieldMail.getText().contains("."))) {
-			
+
+		if(textFieldKolicinaGklavnog.getText().isEmpty() || textFieldKolicinaSalate.getText().isEmpty() ||
+				textFieldIdKlijenta.getText().isEmpty()) {
 			return false;
 		}
 		return true;
@@ -433,10 +480,27 @@ public class GUINarudzbina extends JFrame {
 		return false;
 	}
 	private boolean validacijaIDNarudzbine() throws NumberFormatException, ClassNotFoundException, SQLException {
+		
 		DAONarudzbina daoN=new DAONarudzbina();
 		if(daoN.searchNarudzbineById(Integer.parseInt(textFieldIdNarudzbine.getText()))==true)
 			return true;
 		return false;
+	}
+	
+	private boolean validacijaEmail() {
+		
+		if (Pattern.matches("^[a-zA-Z0-9]+[@]{1}+[a-zA-Z0-9]+[.]{1}+[a-zA-Z0-9]+$", textFieldMail.getText())) {
+			return true;
+		}else{
+			JOptionPane.showMessageDialog(null, "The email is not valid", "Error!", JOptionPane.ERROR_MESSAGE);
+			return false;         
+		}
+	}
+	private void clearFields() {
+		textFieldIdKlijenta.setText("");
+		textFieldKolicinaGklavnog.setText("");
+		textFieldKolicinaSalate.setText("");
+		textFieldMail.setText("");
 	}
 	private static void inputDateEditor() {
 		dtEditor=(JTextFieldDateEditor) datePorudzbine.getDateEditor();

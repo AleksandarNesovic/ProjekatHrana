@@ -1,6 +1,5 @@
 package rs.model;
 
-import java.sql.Date;
 
 public class Narudzbina {
 	private int id_narudzbine;
@@ -11,7 +10,7 @@ public class Narudzbina {
 	private int kolicinaGlavnogJele;
 	private int kolicinaSalate;
 	private String email;
-	private java.sql.Date datumPorudzbine;
+	private String datumPorudzbine;
 	
 	public Narudzbina() {
 		super();
@@ -28,14 +27,14 @@ public class Narudzbina {
 		this.id_narudzbine = id_narudzbine;
 	}
 
-	public Date getDatumPorudzbine() {
+	public String getDatumPorudzbine() {
 		return datumPorudzbine;
 	}
 
 
 
-	public void setDatumPorudzbine(Date datumPorudzbine) {
-		this.datumPorudzbine = datumPorudzbine;
+	public void setDatumPorudzbine(String date) {
+		this.datumPorudzbine = date;
 	}
 	
 
@@ -52,7 +51,7 @@ public class Narudzbina {
 
 
 	public Narudzbina(Klijent klijent, GlavnoJelo glavnoJelo, Salata salata, Slatkis slatkis, int kolicinaGlavnogJele,
-			int kolicinaSalate, String email, Date datumPorudzbine) {
+			int kolicinaSalate, String email, String datumPorudzbine) {
 		super();
 		this.klijent = klijent;
 		this.glavnoJelo = glavnoJelo;
@@ -117,7 +116,7 @@ public class Narudzbina {
 
 	@Override
 	public String toString() {
-		return "id_narudzbine:  " + id_narudzbine + "\nKlijent: " + klijent.getIme() + " "+klijent.getPrezime()+"\n" + glavnoJelo
+		return "ID narudzbine:  " + id_narudzbine + "\nKlijent: " + klijent.getIme() + " "+klijent.getPrezime()+"\n" + glavnoJelo
 				+ " "+ kolicinaGlavnogJele+"g\n" + salata + " " + kolicinaSalate+"g\n"+ slatkis + "\nEmail: " + email + "\nDatum porudzbine: " + datumPorudzbine+"\nUkupna cena narudzbine je: ";
 	}
 	

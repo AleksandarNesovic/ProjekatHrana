@@ -16,9 +16,33 @@ public class DAOSlatkis {
 	private ResultSet resultSet = null;
 
 	private void connect() throws ClassNotFoundException, SQLException {
-		Class.forName("com.mysql.cj.jdbc.Driver");
-		connect = DriverManager.getConnection("jdbc:mysql://localhost/Vezba3 ?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "root", "");
+		Class.forName("org.sqlite.JDBC");
+		connect = DriverManager.getConnection("jdbc:sqlite:Narudzbine.db ");
 	}
+	public void createTable() throws ClassNotFoundException, SQLException {
+		String sql="CREATE TABLE IF NOT EXISTS Slatkis ( `Id_slat` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `NazivSlatkisa` varchar ( 255 )UNIQUE NOT NULL, `Kolicina` int ( 11 )UNIQUE NOT NULL, `CenaSlatkisa` double ( 11,2 )UNIQUE NOT NULL );";
+		connect();
+		statement=connect.createStatement();
+		statement.execute(sql);
+	}
+    public void insert(String naziv,int kolicina, double cena) throws ClassNotFoundException, SQLException {
+        String sql = "INSERT OR IGNORE INTO Slatkis(nazivSlatkisa,Kolicina,cenaSlatkisa) VALUES(?,?,?)";
+        try {
+        connect();
+           	PreparedStatement pstmt = connect.prepareStatement(sql); 
+            pstmt.setString(1, naziv);
+            pstmt.setInt(2, kolicina);
+            pstmt.setDouble(3, cena);
+            pstmt.executeUpdate();
+        } finally {
+			try {
+				if(preparedStatement!=null && !preparedStatement.isClosed()) {
+					preparedStatement.close();
+				} }catch (SQLException e) {
+					System.out.println(e.getMessage());
+				}
+        }
+    }
 
 	
 	public ArrayList<Slatkis> selectSlatkis() throws ClassNotFoundException, SQLException {
@@ -38,9 +62,9 @@ public class DAOSlatkis {
 		while (resultSet.next()) {
 			pom=new Slatkis();
 			pom.setId_slat(resultSet.getInt("id_slat"));
-			pom.setNaziv(resultSet.getString("naziv"));
+			pom.setNaziv(resultSet.getString("nazivSlatkisa"));
 			pom.setKolicina(resultSet.getInt("Kolicina"));
-			pom.setCena(resultSet.getDouble("cena"));
+			pom.setCena(resultSet.getDouble("cenaSlatkisa"));
 
 
 			lista.add(pom);
@@ -53,7 +77,7 @@ public class DAOSlatkis {
 	public void insertSlatkis(Slatkis slatkis) throws ClassNotFoundException, SQLException {
 
 		connect();
-		preparedStatement = connect.prepareStatement("INSERT INTO Slatkis(naziv, kolicina, cena) VALUES (?,?,?)");
+		preparedStatement = connect.prepareStatement("INSERT INTO Slatkis(nazivSlatkisa, kolicina, cenaSlatkisa) VALUES (?,?,?)");
 
 		preparedStatement.setString(1, slatkis.getNaziv());
 		preparedStatement.setInt(2, slatkis.getKolicina());
@@ -81,7 +105,7 @@ public class DAOSlatkis {
 		Slatkis slatkis = null;
 		
 		connect();
-		preparedStatement = connect.prepareStatement("select * from Slatkis WHERE naziv= ?");
+		preparedStatement = connect.prepareStatement("select * from Slatkis WHERE nazivSlatkisa= ?");
 
 		preparedStatement.setString(1, naziv);
 		
@@ -92,9 +116,9 @@ public class DAOSlatkis {
 		if (resultSet.next()) {
 			slatkis = new Slatkis();
 			slatkis.setId_slat(resultSet.getInt("id_slat"));
-			slatkis.setNaziv(resultSet.getString("naziv"));
+			slatkis.setNaziv(resultSet.getString("nazivSlatkisa"));
 			slatkis.setKolicina(resultSet.getInt("Kolicina"));
-			slatkis.setCena(resultSet.getDouble("cena"));
+			slatkis.setCena(resultSet.getDouble("cenaSlatkisa"));
 		}
 		
 		close();
@@ -115,9 +139,9 @@ public class DAOSlatkis {
 		if (resultSet.next()) {
 			slatkis = new Slatkis();
 			slatkis.setId_slat(resultSet.getInt("id_slat"));
-			slatkis.setNaziv(resultSet.getString("naziv"));
+			slatkis.setNaziv(resultSet.getString("nazivSlatkisa"));
 			slatkis.setKolicina(resultSet.getInt("Kolicina"));
-			slatkis.setCena(resultSet.getDouble("cena"));
+			slatkis.setCena(resultSet.getDouble("cenaSlatkisa"));
 		}
 		
 		close();
