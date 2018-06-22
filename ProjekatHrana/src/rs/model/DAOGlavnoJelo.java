@@ -17,15 +17,39 @@ public class DAOGlavnoJelo {
 
 	private void connect() throws ClassNotFoundException, SQLException {
 		Class.forName("org.sqlite.JDBC");
-		connect = DriverManager.getConnection("jdbc:sqlite:/home/dev33/Documents/EclipsWorkspace/Baze/Vezba3 ");
+		connect = DriverManager.getConnection("jdbc:sqlite:Narudzbine.db ");
+		}
+	public void createTable() throws ClassNotFoundException, SQLException {
+		String sql="CREATE TABLE IF NOT EXISTS Glavno_jelo ( `id_glj` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n"
+				+"`Naziv` varchar ( 255 )UNIQUE NOT NULL, `Cena` double ( 11,2 )UNIQUE NOT NULL );";
+		connect();
+		statement=connect.createStatement();
+		statement.execute(sql);
 	}
-
+    public void insert(String naziv, double cena) throws ClassNotFoundException, SQLException {
+        String sql = "INSERT OR IGNORE INTO Glavno_jelo(naziv,cena) VALUES(?,?)";
+        try {
+        connect();
+           	PreparedStatement pstmt = connect.prepareStatement(sql); 
+            pstmt.setString(1, naziv);
+            pstmt.setDouble(2, cena);
+            pstmt.executeUpdate();
+        } finally {
+			try {
+				if(preparedStatement!=null && !preparedStatement.isClosed()) {
+					preparedStatement.close();
+				} }catch (SQLException e) {
+					System.out.println(e.getMessage());
+				}
+        }
+    }
+    
 
 	public ArrayList<GlavnoJelo> selectGlavnoJelo() throws ClassNotFoundException, SQLException {
 
 		ArrayList<GlavnoJelo> lista = new ArrayList<GlavnoJelo>();
 		GlavnoJelo pom=null;
-
+		try {
 		connect();
 		preparedStatement = connect.prepareStatement("select * from Glavno_jelo");
 
@@ -40,7 +64,13 @@ public class DAOGlavnoJelo {
 			pom.setCena(resultSet.getDouble("cena"));
 
 			lista.add(pom);
-		}
+		}}finally {
+			try {
+				if(preparedStatement!=null && !preparedStatement.isClosed()) {
+					preparedStatement.close();
+				} }catch (SQLException e) {
+					System.out.println(e.getMessage());
+				}}
 
 		close();
 		return lista;
@@ -63,7 +93,7 @@ public class DAOGlavnoJelo {
 	}
 	public GlavnoJelo selectGlavnoJeloByNaziv(String naziv) throws ClassNotFoundException, SQLException {
 		GlavnoJelo glavnoJelo = null;
-
+		try {
 		connect();
 		preparedStatement = connect.prepareStatement("select * from Glavno_jelo WHERE naziv= ?");
 
@@ -78,14 +108,20 @@ public class DAOGlavnoJelo {
 			glavnoJelo.setId_glj(resultSet.getInt("id_glj"));
 			glavnoJelo.setNaziv(resultSet.getString("naziv"));
 			glavnoJelo.setCena(resultSet.getDouble("cena"));
-		}
+		}}finally {
+			try {
+				if(preparedStatement!=null && !preparedStatement.isClosed()) {
+					preparedStatement.close();
+				} }catch (SQLException e) {
+					System.out.println(e.getMessage());
+				}}
 
 		close();
 		return glavnoJelo;
 	}
 	public GlavnoJelo selectGlavnoJeloById(int id_glj) throws ClassNotFoundException, SQLException {
 		GlavnoJelo glavnoJelo = null;
-
+		try {
 		connect();
 		preparedStatement = connect.prepareStatement("select * from Glavno_jelo WHERE id_glj= ?");
 
@@ -100,7 +136,13 @@ public class DAOGlavnoJelo {
 			glavnoJelo.setId_glj(resultSet.getInt("id_glj"));
 			glavnoJelo.setNaziv(resultSet.getString("naziv"));
 			glavnoJelo.setCena(resultSet.getDouble("cena"));
-		}
+		}}finally {
+			try {
+				if(preparedStatement!=null && !preparedStatement.isClosed()) {
+					preparedStatement.close();
+				} }catch (SQLException e) {
+					System.out.println(e.getMessage());
+				}}
 
 		close();
 		return glavnoJelo;
@@ -152,7 +194,7 @@ public class DAOGlavnoJelo {
 	}*/
 
 	public void insertGlavnoJelo(GlavnoJelo gj) throws ClassNotFoundException, SQLException {
-
+		try {
 		connect();
 		preparedStatement = connect.prepareStatement("INSERT INTO Glavno_jelo(naziv, kolicina, cena) VALUES (?,?,?)");
 
@@ -160,20 +202,32 @@ public class DAOGlavnoJelo {
 		preparedStatement.setDouble(3, gj.getCena());
 
 		preparedStatement.execute();
-
+		}finally {
+			try {
+				if(preparedStatement!=null && !preparedStatement.isClosed()) {
+					preparedStatement.close();
+				} }catch (SQLException e) {
+					System.out.println(e.getMessage());
+				}}
 
 		close();
 	}
 
 	public void deleteGlavnoJeloByID(int id) throws ClassNotFoundException, SQLException {
-
+		try {
 		connect();
 		preparedStatement = connect.prepareStatement("delete from Glavno_jelo where id_glj = ?");
 
 		preparedStatement.setInt(1, id);
 
 		preparedStatement.execute();
-
+		}finally {
+			try {
+				if(preparedStatement!=null && !preparedStatement.isClosed()) {
+					preparedStatement.close();
+				} }catch (SQLException e) {
+					System.out.println(e.getMessage());
+				}}
 
 		close();
 	}

@@ -18,8 +18,17 @@ public class DAONarudzbina {
 	
 	private void connect() throws ClassNotFoundException, SQLException {
 		Class.forName("org.sqlite.JDBC");
-		connect = DriverManager.getConnection("jdbc:sqlite:/home/dev33/Documents/EclipsWorkspace/Baze/Vezba3 ");
+		connect = DriverManager.getConnection("jdbc:sqlite:Narudzbine.db ");
 	}
+	public void createTable() throws ClassNotFoundException, SQLException {
+		String sql="CREATE TABLE IF NOT EXISTS Narudzbina ( `id_narudzbine` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n"
+				+"`id_klijenta` int ( 11 ) NOT NULL, `id_glj` int ( 11 ) NOT NULL, `id_sal` int ( 11 ) NOT NULL, `id_slat` int ( 11 ) NOT NULL,\n"
+				+"`KolicinaGlavnogJela` int ( 11 ) NOT NULL, `KolicinaSalate` int ( 11 ) NOT NULL, `Email` varchar ( 255 ) NOT NULL, `datumPorudzbine` TEXT NOT NULL, FOREIGN KEY(`id_klijenta`) REFERENCES `Klijenti`, FOREIGN KEY(`id_glj`) REFERENCES `Glavno_jelo`, FOREIGN KEY(`id_sal`) REFERENCES `Salata`, FOREIGN KEY(`id_slat`) REFERENCES `Slatkis` );";
+		connect();
+		statement=connect.createStatement();
+		statement.execute(sql);
+	}
+    
 
 	public ArrayList<Narudzbina> selectNarudzbina() throws ClassNotFoundException, SQLException {
 
@@ -154,6 +163,7 @@ public class DAONarudzbina {
 	public Narudzbina selectNarudzbinaByID(int id) throws ClassNotFoundException, SQLException, ParseException {
 	
 		Narudzbina pom = null;
+		try {
 		connect();
 		preparedStatement = connect.prepareStatement("SELECT n.id_narudzbine, k.ime,k.prezime, g.naziv,g.cena, sal.nazivSalate,sal.cenaSalate, slat.nazivSlatkisa,slat.cenaSlatkisa, KolicinaGlavnogJela, KolicinaSalate, n.Email, datumPorudzbine FROM Narudzbina n,Klijenti k,Glavno_jelo g,Salata sal,Slatkis slat WHERE n.id_klijenta=k.id_klijenta AND n.id_glj=g.id_glj AND n.id_sal=sal.id_sal AND n.id_slat=slat.id_slat AND id_narudzbine = ?");
 
@@ -192,7 +202,13 @@ public class DAONarudzbina {
 			pom.setKolicinaSalate(resultSet.getInt("KolicinaSalate"));
 			pom.setEmail(resultSet.getString("Email"));
 			pom.setDatumPorudzbine(resultSet.getString("datumPorudzbine"));
-			}
+			}}finally {
+				try {
+					if(preparedStatement!=null && !preparedStatement.isClosed()) {
+						preparedStatement.close();
+					} }catch (SQLException e) {
+						System.out.println(e.getMessage());
+					}}
 		close();
 		return pom;
 

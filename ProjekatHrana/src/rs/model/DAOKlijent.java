@@ -17,8 +17,33 @@ public class DAOKlijent {
 
 	private void connect() throws ClassNotFoundException, SQLException {
 		Class.forName("org.sqlite.JDBC");
-		connect = DriverManager.getConnection("jdbc:sqlite:/home/dev33/Documents/EclipsWorkspace/Baze/Vezba3 ");
+		connect = DriverManager.getConnection("jdbc:sqlite:Narudzbine.db ");
 	}
+	public void createTable() throws ClassNotFoundException, SQLException {
+		String sql="CREATE TABLE IF NOT EXISTS Klijenti (`id_klijenta` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `Ime` varchar ( 255 )UNIQUE NOT NULL, `Prezime` varchar ( 255 )UNIQUE NOT NULL, `BrojTelefona` varchar ( 255 )UNIQUE NOT NULL, `EmailKlijenta` varchar ( 255 )UNIQUE NOT NULL );";
+		connect();
+		statement=connect.createStatement();
+		statement.execute(sql);
+	}
+    public void insert(String ime, String prezime,String brtel,String email) throws ClassNotFoundException, SQLException {
+        String sql = "INSERT OR IGNORE INTO Klijenti(Ime,Prezime,BrojTelefona,EmailKlijenta) VALUES(?,?,?,?)";
+        try {
+        connect();
+           	PreparedStatement pstmt = connect.prepareStatement(sql); 
+            pstmt.setString(1, ime);
+            pstmt.setString(2, prezime);
+            pstmt.setString(3, brtel);
+            pstmt.setString(4, email);
+            pstmt.executeUpdate();
+        } finally {
+			try {
+				if(preparedStatement!=null && !preparedStatement.isClosed()) {
+					preparedStatement.close();
+				} }catch (SQLException e) {
+					System.out.println(e.getMessage());
+				}
+        }
+    }
 	
 		public ArrayList<Klijent> selectKlijenta() throws ClassNotFoundException, SQLException {
 

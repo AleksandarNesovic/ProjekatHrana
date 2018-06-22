@@ -17,8 +17,31 @@ public class DAOSalata {
 
 	private void connect() throws ClassNotFoundException, SQLException {
 		Class.forName("org.sqlite.JDBC");
-		connect = DriverManager.getConnection("jdbc:sqlite:/home/dev33/Documents/EclipsWorkspace/Baze/Vezba3 ");
+		connect = DriverManager.getConnection("jdbc:sqlite:Narudzbine.db ");
 	}
+	public void createTable() throws ClassNotFoundException, SQLException {
+		String sql="CREATE TABLE IF NOT EXISTS Salata ( `id_sal` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `NazivSalate` varchar ( 255 )UNIQUE NOT NULL, `CenaSalate` double ( 11,2 )UNIQUE NOT NULL );";
+		connect();
+		statement=connect.createStatement();
+		statement.execute(sql);
+	}
+    public void insert(String naziv, double cena) throws ClassNotFoundException, SQLException {
+        String sql = "INSERT OR IGNORE INTO Salata(nazivSalate,cenaSalate) VALUES(?,?)";
+        try {
+        connect();
+           	PreparedStatement pstmt = connect.prepareStatement(sql); 
+            pstmt.setString(1, naziv);
+            pstmt.setDouble(2, cena);
+            pstmt.executeUpdate();
+        } finally {
+			try {
+				if(preparedStatement!=null && !preparedStatement.isClosed()) {
+					preparedStatement.close();
+				} }catch (SQLException e) {
+					System.out.println(e.getMessage());
+				}
+        }
+    }
 
 	
 	public ArrayList<Salata> selectSalata() throws ClassNotFoundException, SQLException {

@@ -17,8 +17,32 @@ public class DAOSlatkis {
 
 	private void connect() throws ClassNotFoundException, SQLException {
 		Class.forName("org.sqlite.JDBC");
-		connect = DriverManager.getConnection("jdbc:sqlite:/home/dev33/Documents/EclipsWorkspace/Baze/Vezba3 ");
+		connect = DriverManager.getConnection("jdbc:sqlite:Narudzbine.db ");
 	}
+	public void createTable() throws ClassNotFoundException, SQLException {
+		String sql="CREATE TABLE IF NOT EXISTS Slatkis ( `Id_slat` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `NazivSlatkisa` varchar ( 255 )UNIQUE NOT NULL, `Kolicina` int ( 11 )UNIQUE NOT NULL, `CenaSlatkisa` double ( 11,2 )UNIQUE NOT NULL );";
+		connect();
+		statement=connect.createStatement();
+		statement.execute(sql);
+	}
+    public void insert(String naziv,int kolicina, double cena) throws ClassNotFoundException, SQLException {
+        String sql = "INSERT OR IGNORE INTO Slatkis(nazivSlatkisa,Kolicina,cenaSlatkisa) VALUES(?,?,?)";
+        try {
+        connect();
+           	PreparedStatement pstmt = connect.prepareStatement(sql); 
+            pstmt.setString(1, naziv);
+            pstmt.setInt(2, kolicina);
+            pstmt.setDouble(3, cena);
+            pstmt.executeUpdate();
+        } finally {
+			try {
+				if(preparedStatement!=null && !preparedStatement.isClosed()) {
+					preparedStatement.close();
+				} }catch (SQLException e) {
+					System.out.println(e.getMessage());
+				}
+        }
+    }
 
 	
 	public ArrayList<Slatkis> selectSlatkis() throws ClassNotFoundException, SQLException {

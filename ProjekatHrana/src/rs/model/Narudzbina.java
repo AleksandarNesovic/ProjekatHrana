@@ -116,7 +116,7 @@ public class Narudzbina {
 
 	@Override
 	public String toString() {
-		return "id_narudzbine:  " + id_narudzbine + "\nKlijent: " + klijent.getIme() + " "+klijent.getPrezime()+"\n" + glavnoJelo
+		return "ID narudzbine:  " + id_narudzbine + "\nKlijent: " + klijent.getIme() + " "+klijent.getPrezime()+"\n" + glavnoJelo
 				+ " "+ kolicinaGlavnogJele+"g\n" + salata + " " + kolicinaSalate+"g\n"+ slatkis + "\nEmail: " + email + "\nDatum porudzbine: " + datumPorudzbine+"\nUkupna cena narudzbine je: ";
 	}
 	
