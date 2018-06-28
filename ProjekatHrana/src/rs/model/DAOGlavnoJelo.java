@@ -21,7 +21,7 @@ public class DAOGlavnoJelo {
 		}
 	public void createTable() throws ClassNotFoundException, SQLException {
 		String sql="CREATE TABLE IF NOT EXISTS Glavno_jelo ( `id_glj` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n"
-				+"`Naziv` varchar ( 255 )UNIQUE NOT NULL, `Cena` double ( 11,2 )UNIQUE NOT NULL );";
+				+"`Naziv` varchar ( 255 )UNIQUE NOT NULL, `Cena` double ( 11,2 ) NOT NULL );";
 		connect();
 		statement=connect.createStatement();
 		statement.execute(sql);
@@ -147,59 +147,53 @@ public class DAOGlavnoJelo {
 		close();
 		return glavnoJelo;
 	}
-/*	public GlavnoJelo selectGlavnoJeloByNaziv(String naziv) throws ClassNotFoundException, SQLException {
-		GlavnoJelo glavnoJelo = null;
-
+	public boolean daLiPostoji(GlavnoJelo g) throws ClassNotFoundException, SQLException {
+		try {
 		connect();
-		preparedStatement = connect.prepareStatement("select * from Glavno_jelo WHERE naziv= ?");
-
-		preparedStatement.setString(1, naziv);
-
+		preparedStatement=connect.prepareStatement("SELECT * FROM Glavno_jelo Where naziv=?");
+		preparedStatement.setString(1, g.getNaziv());
 		preparedStatement.execute();
-
-		resultSet = preparedStatement.getResultSet();
-
-		if (resultSet.next()) {
-			glavnoJelo = new GlavnoJelo();
-			glavnoJelo.setId_glj(resultSet.getInt("id_glj"));
-			glavnoJelo.setNaziv(resultSet.getString("naziv"));
-			glavnoJelo.setKolicina(resultSet.getInt("kolicina"));
-			glavnoJelo.setCena(resultSet.getDouble("cena"));
-		}
-
+		resultSet=preparedStatement.getResultSet();
+		if(resultSet.next()) {
+			return true;
+		}}finally {
+			try {
+				if(preparedStatement!=null && !preparedStatement.isClosed()) {
+					preparedStatement.close();
+				} }catch (SQLException e) {
+					System.out.println(e.getMessage());
+				}
+			}
 		close();
-		return glavnoJelo;
+		return false;
 	}
-	public GlavnoJelo selectIzabranoGlavnoJelo(GlavnoJelo glavno) throws ClassNotFoundException, SQLException {
-		GlavnoJelo glavnoJelo = null;
-
-		connect();
-		preparedStatement = connect.prepareStatement("select * from Glavno_jelo");
-
-		//preparedStatement.setInt(1, id_glj);
-
-		preparedStatement.execute();
-
-		resultSet = preparedStatement.getResultSet();
-
-		if (resultSet.next()) {
-			glavnoJelo = new GlavnoJelo();
-			glavnoJelo.setId_glj(resultSet.getInt("id_glj"));
-			glavnoJelo.setNaziv(resultSet.getString("naziv"));
-			glavnoJelo.setCena(resultSet.getDouble("cena"));
-		}
-
-		close();
-		return glavnoJelo;
-	}*/
-
 	public void insertGlavnoJelo(GlavnoJelo gj) throws ClassNotFoundException, SQLException {
 		try {
 		connect();
-		preparedStatement = connect.prepareStatement("INSERT INTO Glavno_jelo(naziv, kolicina, cena) VALUES (?,?,?)");
+		preparedStatement = connect.prepareStatement("INSERT INTO Glavno_jelo(naziv, cena) VALUES (?,?)");
 
 		preparedStatement.setString(1, gj.getNaziv());
-		preparedStatement.setDouble(3, gj.getCena());
+		preparedStatement.setDouble(2, gj.getCena());
+
+		preparedStatement.execute();
+		}finally {
+			try {
+				if(preparedStatement!=null && !preparedStatement.isClosed()) {
+					preparedStatement.close();
+				} }catch (SQLException e) {
+					System.out.println(e.getMessage());
+				}}
+
+		close();
+	}
+	public void updateGlavnoJelo(GlavnoJelo gj) throws ClassNotFoundException, SQLException {
+		try {
+		connect();
+		preparedStatement = connect.prepareStatement("UPDATE Glavno_jelo SET naziv=?, cena=? WHERE id_glj=?");
+
+		preparedStatement.setString(1, gj.getNaziv());
+		preparedStatement.setDouble(2, gj.getCena());
+		preparedStatement.setInt(3, gj.getId_glj());
 
 		preparedStatement.execute();
 		}finally {
@@ -219,6 +213,24 @@ public class DAOGlavnoJelo {
 		preparedStatement = connect.prepareStatement("delete from Glavno_jelo where id_glj = ?");
 
 		preparedStatement.setInt(1, id);
+
+		preparedStatement.execute();
+		}finally {
+			try {
+				if(preparedStatement!=null && !preparedStatement.isClosed()) {
+					preparedStatement.close();
+				} }catch (SQLException e) {
+					System.out.println(e.getMessage());
+				}}
+
+		close();
+	}
+	public void deleteGlavnoJeloByNaziv(String naziv) throws ClassNotFoundException, SQLException {
+		try {
+		connect();
+		preparedStatement = connect.prepareStatement("delete from Glavno_jelo where naziv = ?");
+
+		preparedStatement.setString(1, naziv);
 
 		preparedStatement.execute();
 		}finally {

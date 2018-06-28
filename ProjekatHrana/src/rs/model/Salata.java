@@ -8,7 +8,7 @@ public class Salata {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Salata(String naziv, int porcija, double cena) {
+	public Salata(String naziv, double cena) {
 		super();
 		this.naziv = naziv;
 		this.cena = cena;
