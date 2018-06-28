@@ -22,7 +22,7 @@ public class TableModelNarudzbina extends AbstractTableModel{
 	@Override
 	public int getColumnCount() {
 		// TODO Auto-generated method stub
-		return 10;
+		return 9;
 	}
 
 	@Override
@@ -37,8 +37,7 @@ public class TableModelNarudzbina extends AbstractTableModel{
 		case 5: return n.getSlatkis().getNaziv();
 		case 6: return n.getKolicinaGlavnogJele();
 		case 7: return n.getKolicinaSalate();
-		case 8: return n.getEmail();
-		case 9: return n.getDatumPorudzbine();
+		case 8: return n.getDatumPorudzbine();
 		default: return "Greska!";
 		}
 	}
@@ -53,8 +52,7 @@ public class TableModelNarudzbina extends AbstractTableModel{
 		case 5: return "Slatkis";
 		case 6: return "Kol Glavnog jela" ;
 		case 7: return "Kolicina Salate";
-		case 8: return "Email";
-		case 9: return "Datum porudzbine";
+		case 8: return "Datum porudzbine";
 		default: return "Greska!";
 		}
 	}

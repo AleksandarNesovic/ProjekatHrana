@@ -23,7 +23,7 @@ public class DAONarudzbina {
 	public void createTable() throws ClassNotFoundException, SQLException {
 		String sql="CREATE TABLE IF NOT EXISTS Narudzbina ( `id_narudzbine` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n"
 				+"`id_klijenta` int ( 11 ) NOT NULL, `id_glj` int ( 11 ) NOT NULL, `id_sal` int ( 11 ) NOT NULL, `id_slat` int ( 11 ) NOT NULL,\n"
-				+"`KolicinaGlavnogJela` int ( 11 ) NOT NULL, `KolicinaSalate` int ( 11 ) NOT NULL, `Email` varchar ( 255 ) NOT NULL, `datumPorudzbine` TEXT NOT NULL, FOREIGN KEY(`id_klijenta`) REFERENCES `Klijenti`, FOREIGN KEY(`id_glj`) REFERENCES `Glavno_jelo`, FOREIGN KEY(`id_sal`) REFERENCES `Salata`, FOREIGN KEY(`id_slat`) REFERENCES `Slatkis` );";
+				+"`KolicinaGlavnogJela` int ( 11 ) NOT NULL, `KolicinaSalate` int ( 11 ) NOT NULL, `datumPorudzbine` TEXT NOT NULL, FOREIGN KEY(`id_klijenta`) REFERENCES `Klijenti`, FOREIGN KEY(`id_glj`) REFERENCES `Glavno_jelo`, FOREIGN KEY(`id_sal`) REFERENCES `Salata`, FOREIGN KEY(`id_slat`) REFERENCES `Slatkis` );";
 		connect();
 		statement=connect.createStatement();
 		statement.execute(sql);
@@ -65,7 +65,6 @@ public class DAONarudzbina {
 
 			pom.setKolicinaGlavnogJele(resultSet.getInt("KolicinaGlavnogJela"));
 			pom.setKolicinaSalate(resultSet.getInt("KolicinaSalate"));
-			pom.setEmail(resultSet.getString("Email"));
 			pom.setDatumPorudzbine(resultSet.getString("datumPorudzbine"));
 
 			lista.add(pom);
@@ -85,7 +84,7 @@ public class DAONarudzbina {
 		try {
 		connect();
 		
-		preparedStatement = connect.prepareStatement("insert into Narudzbina (id_klijenta,id_glj,id_sal,id_slat,KolicinaGlavnogJela,KolicinaSalate,Email,datumPorudzbine) values (?,?,?,?,?,?,?,?)");
+		preparedStatement = connect.prepareStatement("insert into Narudzbina (id_klijenta,id_glj,id_sal,id_slat,KolicinaGlavnogJela,KolicinaSalate,datumPorudzbine) values (?,?,?,?,?,?,?)");
 
 		preparedStatement.setInt(1, n.getKlijent().getId_klijenta());
 		preparedStatement.setInt(2, n.getGlavnoJelo().getId_glj());
@@ -93,8 +92,7 @@ public class DAONarudzbina {
 		preparedStatement.setInt(4, n.getSlatkis().getId_slat());
 		preparedStatement.setInt(5, n.getKolicinaGlavnogJele());
 		preparedStatement.setInt(6, n.getKolicinaSalate());
-		preparedStatement.setString(7, n.getEmail());
-		preparedStatement.setString(8, n.getDatumPorudzbine());
+		preparedStatement.setString(7, n.getDatumPorudzbine());
 
 		preparedStatement.executeUpdate();
 		}finally {
@@ -114,7 +112,7 @@ public class DAONarudzbina {
 		ArrayList<Narudzbina> lista=new ArrayList<Narudzbina>();
 		try {
 		connect();
-		preparedStatement = connect.prepareStatement("SELECT n.id_narudzbine, k.ime,k.prezime, g.naziv, sal.nazivSalate, slat.nazivSlatkisa, KolicinaGlavnogJela, KolicinaSalate, n.Email, datumPorudzbine FROM Narudzbina n,Klijenti k,Glavno_jelo g,Salata sal,Slatkis slat WHERE n.id_klijenta=k.id_klijenta AND n.id_glj=g.id_glj AND n.id_sal=sal.id_sal AND n.id_slat=slat.id_slat AND datumPorudzbine = ?");
+		preparedStatement = connect.prepareStatement("SELECT n.id_narudzbine, k.ime,k.prezime, g.naziv, sal.nazivSalate, slat.nazivSlatkisa, KolicinaGlavnogJela, KolicinaSalate, datumPorudzbine FROM Narudzbina n,Klijenti k,Glavno_jelo g,Salata sal,Slatkis slat WHERE n.id_klijenta=k.id_klijenta AND n.id_glj=g.id_glj AND n.id_sal=sal.id_sal AND n.id_slat=slat.id_slat AND datumPorudzbine = ?");
 
 		preparedStatement.setString(1,datum);
 
@@ -145,7 +143,6 @@ public class DAONarudzbina {
 
 			pom.setKolicinaGlavnogJele(resultSet.getInt("KolicinaGlavnogJela"));
 			pom.setKolicinaSalate(resultSet.getInt("KolicinaSalate"));
-			pom.setEmail(resultSet.getString("Email"));
 			pom.setDatumPorudzbine(resultSet.getString("datumPorudzbine"));
 			lista.add(pom);
 		}}finally {
@@ -165,11 +162,7 @@ public class DAONarudzbina {
 		Narudzbina pom = null;
 		try {
 		connect();
-
-		preparedStatement = connect.prepareStatement("SELECT n.id_narudzbine, k.ime,k.prezime, g.naziv,g.cena, sal.nazivSalate,sal.cenaSalate, slat.nazivSlatkisa,slat.cenaSlatkisa, KolicinaGlavnogJela, KolicinaSalate, n.Email, datumPorudzbine FROM Narudzbina n,Klijenti k,Glavno_jelo g,Salata sal,Slatkis slat WHERE n.id_klijenta=k.id_klijenta AND n.id_glj=g.id_glj AND n.id_sal=sal.id_sal AND n.id_slat=slat.id_slat AND id_narudzbine = ?");
-
-		
-
+		preparedStatement = connect.prepareStatement("SELECT n.id_narudzbine, k.ime,k.prezime, g.naziv,g.cena, sal.nazivSalate,sal.cenaSalate, slat.nazivSlatkisa,slat.cenaSlatkisa, KolicinaGlavnogJela, KolicinaSalate, datumPorudzbine FROM Narudzbina n,Klijenti k,Glavno_jelo g,Salata sal,Slatkis slat WHERE n.id_klijenta=k.id_klijenta AND n.id_glj=g.id_glj AND n.id_sal=sal.id_sal AND n.id_slat=slat.id_slat AND id_narudzbine = ?");
 		preparedStatement.setInt(1, id);
 
 		preparedStatement.execute();
@@ -205,8 +198,6 @@ public class DAONarudzbina {
 
 			pom.setKolicinaGlavnogJele(resultSet.getInt("KolicinaGlavnogJela"));
 			pom.setKolicinaSalate(resultSet.getInt("KolicinaSalate"));
-
-			pom.setEmail(resultSet.getString("Email"));
 			pom.setDatumPorudzbine(resultSet.getString("datumPorudzbine"));
 			}}finally {
 				try {

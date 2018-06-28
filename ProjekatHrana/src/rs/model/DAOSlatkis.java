@@ -20,7 +20,7 @@ public class DAOSlatkis {
 		connect = DriverManager.getConnection("jdbc:sqlite:Narudzbine.db ");
 	}
 	public void createTable() throws ClassNotFoundException, SQLException {
-		String sql="CREATE TABLE IF NOT EXISTS Slatkis ( `Id_slat` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `NazivSlatkisa` varchar ( 255 )UNIQUE NOT NULL, `Kolicina` int ( 11 )UNIQUE NOT NULL, `CenaSlatkisa` double ( 11,2 )UNIQUE NOT NULL );";
+		String sql="CREATE TABLE IF NOT EXISTS Slatkis ( `Id_slat` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `NazivSlatkisa` varchar ( 255 )UNIQUE NOT NULL, `Kolicina` int ( 11 ) NOT NULL, `CenaSlatkisa` double ( 11,2 ) NOT NULL );";
 		connect();
 		statement=connect.createStatement();
 		statement.execute(sql);
@@ -43,7 +43,26 @@ public class DAOSlatkis {
 				}
         }
     }
-
+    public boolean daLiPostoji(Slatkis g) throws ClassNotFoundException, SQLException {
+		try {
+		connect();
+		preparedStatement=connect.prepareStatement("SELECT * FROM Slatkis Where nazivSlatkisa=?");
+		preparedStatement.setString(1, g.getNaziv());
+		preparedStatement.execute();
+		resultSet=preparedStatement.getResultSet();
+		if(resultSet.next()) {
+			return true;
+		}}finally {
+			try {
+				if(preparedStatement!=null && !preparedStatement.isClosed()) {
+					preparedStatement.close();
+				} }catch (SQLException e) {
+					System.out.println(e.getMessage());
+				}
+			}
+		close();
+		return false;
+	}
 	
 	public ArrayList<Slatkis> selectSlatkis() throws ClassNotFoundException, SQLException {
 		
@@ -101,6 +120,40 @@ public class DAOSlatkis {
 		
 		close();
 	}
+	public void deleteSlatkisByNaziv(String naziv) throws ClassNotFoundException, SQLException {
+
+		connect();
+		preparedStatement = connect.prepareStatement("delete from Slatkis where nazivSlatkisa = ?");
+
+		preparedStatement.setString(1, naziv);
+		
+		preparedStatement.execute();
+		
+		
+		close();
+	}
+	public void updateSlatkisi(Slatkis gj) throws ClassNotFoundException, SQLException {
+		try {
+		connect();
+		preparedStatement = connect.prepareStatement("UPDATE Slatkis SET nazivSlatkisa=?,kolicina=?, cenaSlatkisa=? WHERE id_slat=?");
+
+		preparedStatement.setString(1, gj.getNaziv());
+		preparedStatement.setInt(2, gj.getKolicina());
+		preparedStatement.setDouble(3, gj.getCena());
+		preparedStatement.setInt(4, gj.getId_slat());
+
+		preparedStatement.execute();
+		}finally {
+			try {
+				if(preparedStatement!=null && !preparedStatement.isClosed()) {
+					preparedStatement.close();
+				} }catch (SQLException e) {
+					System.out.println(e.getMessage());
+				}}
+
+		close();
+	}
+
 	public Slatkis selectSLatkisByNaziv(String naziv) throws ClassNotFoundException, SQLException {
 		Slatkis slatkis = null;
 		

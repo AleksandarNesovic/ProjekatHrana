@@ -9,7 +9,6 @@ public class Narudzbina {
 	private Slatkis slatkis;
 	private int kolicinaGlavnogJele;
 	private int kolicinaSalate;
-	private String email;
 	private String datumPorudzbine;
 	
 	public Narudzbina() {
@@ -51,7 +50,7 @@ public class Narudzbina {
 
 
 	public Narudzbina(Klijent klijent, GlavnoJelo glavnoJelo, Salata salata, Slatkis slatkis, int kolicinaGlavnogJele,
-			int kolicinaSalate, String email, String datumPorudzbine) {
+			int kolicinaSalate, String datumPorudzbine) {
 		super();
 		this.klijent = klijent;
 		this.glavnoJelo = glavnoJelo;
@@ -59,7 +58,6 @@ public class Narudzbina {
 		this.slatkis = slatkis;
 		this.kolicinaGlavnogJele = kolicinaGlavnogJele;
 		this.kolicinaSalate = kolicinaSalate;
-		this.email = email;
 		this.datumPorudzbine = datumPorudzbine;
 	}
 
@@ -105,19 +103,10 @@ public class Narudzbina {
 		this.kolicinaSalate = kolicinaSalate;
 	}
 
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
 	@Override
 	public String toString() {
 		return "ID narudzbine:  " + id_narudzbine + "\nKlijent: " + klijent.getIme() + " "+klijent.getPrezime()+"\n" + glavnoJelo
-				+ " "+ kolicinaGlavnogJele+"g\n" + salata + " " + kolicinaSalate+"g\n"+ slatkis + "\nEmail: " + email + "\nDatum porudzbine: " + datumPorudzbine+"\nUkupna cena narudzbine je: ";
+				+ " "+ kolicinaGlavnogJele+"g\n" + salata + " " + kolicinaSalate+"g\n"+ slatkis  + "\nDatum porudzbine: " + datumPorudzbine+"\nUkupna cena narudzbine je: ";
 	}
 	
 
